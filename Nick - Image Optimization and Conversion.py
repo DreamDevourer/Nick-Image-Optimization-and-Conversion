@@ -22,6 +22,10 @@ SUMMARY:
 - [x] Make the optimization script
 - [x] Make the conversion script
 - [] Connect everything to the tk UI
+--- [] Make the app load all possible images inside the Listbox
+--- [] When the user clicks the Make Magic button, run defs
+--- [x] Create two defs - one for optimizing and other for converting
+--- [] After the optimizing def runs, initiate the convert def.
 """
 
 # Initial Setup to load assets
@@ -154,14 +158,30 @@ canvas.create_text(
     font=("Mulish Regular", 18 * -1)
 )
 
-# Listbox to show files loaded
-canvas.create_rectangle(
-    210.0,
-    155.0,
-    947.0,
-    548.0,
-    fill="#ECEBFB",
-    outline="")
+# Listbox to show files loaded rootWindow
+imagesLoaded = ('image.jpg', 'image.jpeg', 'image.png')
+list_items = Listbox(
+    rootWindow,
+    height=5,
+    width=50,
+    bg="#ECEBFB",
+    fg="#000000",
+    font=("Mulish Regular", 18 * -1),
+    highlightcolor="#ECC0FB",
+    border=0
+)
+
+for imagesFound in imagesLoaded:
+    list_items.insert(END, imagesFound)
+list_items.pack()
+
+# canvas.create_rectangle(
+#     210.0,
+#     155.0,
+#     947.0,
+#     548.0,
+#     fill="#ECEBFB",
+#     outline="")
 
 canvas.create_text(
     253.0,
