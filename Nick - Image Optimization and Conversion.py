@@ -4,6 +4,7 @@ import sys
 import pathlib
 from pathlib import Path
 from tkinter import *
+from tkinter.filedialog import *
 from PIL import Image
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from pathlib import Path
 SUMMARY:
 💬 Variables
 🌈 UI
+🔖 Load GUI files defs
 ⚙️ Logic and Defs
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
@@ -54,7 +56,7 @@ rootWindow.title("Nick - Image Optimization and Conversion")
 
 # 💬 Variables
 
-files = os.listdir(ASSETS_PATH)
+files = os.listdir(IMAGES_PATH)
 
 # 🌈 UI
 canvas = Canvas(
@@ -84,7 +86,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=lambda: optimizationFunction(),
     relief="flat"
 )
 button_1.place(
@@ -117,7 +119,7 @@ button_2 = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=lambda: loadFolderForImg(),
     relief="flat"
 )
 button_2.place(
@@ -127,7 +129,18 @@ button_2.place(
     height=46.0
 )
 
+# 🔖 Load GUI files defs
+
+
+def loadFolderForImg():
+    # open dialog box to select folder
+    askopenfilename()
+    # entry_DefPath.set(str(IMAGES_PATH))
+
+
 # Entry to load files
+entry_DefPath = StringVar()
+entry_DefPath.set(str(IMAGES_PATH))
 entry_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(
@@ -139,6 +152,7 @@ entry_1 = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000000",
+    textvariable=entry_DefPath,
     highlightthickness=0
 )
 entry_1.place(
@@ -175,14 +189,6 @@ list_items.place(relx=0.5, rely=0.5, anchor="center")
 
 for imagesFound in imagesLoaded:
     list_items.insert(END, imagesFound)
-
-# canvas.create_rectangle(
-#     210.0,
-#     155.0,
-#     947.0,
-#     548.0,
-#     fill="#ECEBFB",
-#     outline="")
 
 canvas.create_text(
     253.0,
@@ -258,68 +264,79 @@ https://github.com/DreamDevourer/Python-Fundamentals-Study
 
 # =========== 🧬 Optimization Functions ===========
 
+folderImgs = entry_1.get()
+print(folderImgs)
 
-# def optimizationFunction():
-#     print(
-#         f"These are all of the files in our current working directory: {files}")
-#     confirmFiles = input("Confirm files? (Y/n) ")
-#     confirmDownRes = input(
-#         "Do you want to reduce the resolution by 50%? (Y/n) ")
 
-#     if confirmDownRes == "y" or confirmDownRes == "Y" or confirmDownRes == "":
-#         confirmReduction = True
+def optimizationFunction():
+    print(
+        f"These are all of the files in our current working directory: {files}")
+    confirmFiles = "y"
+    confirmDownRes = "y"  # I need to change it in future.
 
-#     if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
-#         for file in files:
-#             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
-#                 print(f"Optimizing {file}")
-#                 imgOptimize = Image.open(relative_to_assets(str(file)))
-#                 imgWidth, imgHeight = imgOptimize.size
-#                 if confirmReduction == True:
-#                     imgOptimize = imgOptimize.resize(
-#                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS)
+    if confirmDownRes == "y" or confirmDownRes == "Y" or confirmDownRes == "":
+        confirmReduction = True
 
-#                     if file.endswith(".png"):
-#                         imgOptimize.save(str(relative_to_assets(
-#                             str(file))), optimize=True, quality=70)
-#                     if file.endswith(".jpg") or file.endswith(".jpeg"):
-#                         imgOptimize.save(str(relative_to_assets(
-#                             str(file))), optimize=True, quality=80)
-#                 else:
-#                     if file.endswith(".png"):
-#                         imgOptimize.save(str(relative_to_assets(
-#                             str(file))), optimize=True, quality=70)
-#                     if file.endswith(".jpg") or file.endswith(".jpeg"):
-#                         imgOptimize.save(str(relative_to_assets(
-#                             str(file))), optimize=True, quality=80)
-#                 print(f"{file} optimized!")
-#             else:
-#                 print(f"{file} is not a PNG or JPG, skipping")
-#     else:
-#         print("Exiting...")
-#         sys.exit()
+    if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
+        for file in files:
+            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
+                print(f"Optimizing {file}")
+                imgOptimize = Image.open(relative_to_images(str(file)))
+                imgWidth, imgHeight = imgOptimize.size
+                list_items.delete(0, END)
+                list_items.insert(END, file)
+                # If user wants to reduce image resolution by half.
+                if confirmReduction == True:
+                    imgOptimize = imgOptimize.resize(
+                        (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS)
+
+                    if file.endswith(".png"):
+                        imgOptimize.save(str(relative_to_images(
+                            str(file))), optimize=True, quality=70)
+                        convertionFunction()
+                    if file.endswith(".jpg") or file.endswith(".jpeg"):
+                        imgOptimize.save(str(relative_to_images(
+                            str(file))), optimize=True, quality=80)
+                        convertionFunction()
+                # If user don't want to reduce image resolution by half.
+                else:
+                    if file.endswith(".png"):
+                        imgOptimize.save(str(relative_to_images(
+                            str(file))), optimize=True, quality=70)
+                        convertionFunction()
+                    if file.endswith(".jpg") or file.endswith(".jpeg"):
+                        imgOptimize.save(str(relative_to_images(
+                            str(file))), optimize=True, quality=80)
+                        convertionFunction()
+                print(f"{file} optimized!")
+            else:
+                print(f"{file} is not a PNG or JPG, skipping")
+    else:
+        print("Exiting...")
+        sys.exit()
 
 # =========== 🎭 Convertion Functions ===========
 
 
-# def convertionFunction():
-#     print(
-#         f"These are all of the files in our current working directory: {files}")
-#     confirmFiles = input("Confirm files? (Y/n) ")
+def convertionFunction():
+    print(
+        f"These are all of the files in our current working directory: {files}")
 
-#     if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
-#         for file in files:
-#             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
-#                 print(f"Converting {file} to WebP")
-#                 loadImg = Image.open(relative_to_assets(str(file)))
-#                 loadImg.save(str(relative_to_assets(str(file))) +
-#                              ".webp", "WEBP", quality=80)
-#                 print(f"{file} converted to WebP")
-#             else:
-#                 print(f"{file} is not a PNG or JPG, skipping...")
-#     else:
-#         print("Exiting...")
-#         sys.exit()
+    confirmFiles = "y"
+
+    if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
+        for file in files:
+            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
+                print(f"Converting {file} to WebP")
+                loadImg = Image.open(relative_to_images(str(file)))
+                loadImg.save(str(relative_to_images(str(file))) +
+                             ".webp", "WEBP", quality=80)
+                print(f"{file} converted to WebP")
+            else:
+                print(f"{file} is not a PNG or JPG, skipping...")
+    else:
+        print("Exiting...")
+        sys.exit()
 
 
 rootWindow.mainloop()
