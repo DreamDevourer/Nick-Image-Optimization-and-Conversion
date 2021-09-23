@@ -161,19 +161,20 @@ canvas.create_text(
 # Listbox to show files loaded rootWindow
 imagesLoaded = ('image.jpg', 'image.jpeg', 'image.png')
 list_items = Listbox(
-    rootWindow,
+    x=210.0,
+    y=115.0,
     height=5,
     width=50,
     bg="#ECEBFB",
     fg="#000000",
     font=("Mulish Regular", 18 * -1),
     highlightcolor="#ECC0FB",
-    border=0
+    border=0,
 )
+list_items.place(relx=0.5, rely=0.5, anchor="center")
 
 for imagesFound in imagesLoaded:
     list_items.insert(END, imagesFound)
-list_items.pack()
 
 # canvas.create_rectangle(
 #     210.0,
