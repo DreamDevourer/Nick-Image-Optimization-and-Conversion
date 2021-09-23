@@ -2,11 +2,13 @@ import PIL
 import os
 import sys
 import pathlib
+import shutil
 from pathlib import Path
 from tkinter import *
 from tkinter.filedialog import *
 from PIL import Image
 from pathlib import Path
+from shutil import copyfile
 
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
@@ -57,6 +59,7 @@ rootWindow.title("Nick - Image Optimization and Conversion")
 # 💬 Variables
 
 files = os.listdir(IMAGES_PATH)
+# files = askopenfilename()
 
 # 🌈 UI
 canvas = Canvas(
@@ -133,9 +136,11 @@ button_2.place(
 
 
 def loadFolderForImg():
+    global files
     # open dialog box to select folder
-    askopenfilename()
-    # entry_DefPath.set(str(IMAGES_PATH))
+    printableFiles = askdirectory(initialdir=IMAGES_PATH)
+    files = os.listdir(printableFiles)
+    entry_DefPath.set(str(printableFiles))
 
 
 # Entry to load files
@@ -280,6 +285,14 @@ def optimizationFunction():
     if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
         for file in files:
             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
+
+                # Backup operation
+                shutil.copy(
+                    f"{folderImgs}/{file}",
+                    f"{folderImgs}/backup/_backup_{file}"
+                )
+                print(f"Copying {file} to backup folder")
+
                 print(f"Optimizing {file}")
                 imgOptimize = Image.open(relative_to_images(str(file)))
                 imgWidth, imgHeight = imgOptimize.size
