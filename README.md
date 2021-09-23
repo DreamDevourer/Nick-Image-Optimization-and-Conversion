@@ -6,7 +6,7 @@
   <a href="./LICENSE">License</a>
 </p>
 <br>
-<img src="./Sample.png" alt="Image optimization and conversion sample." width="980px" height="auto" align="center">
+<img src="./Sample.png" alt="Image optimization and conversion sample." width="896px" height="auto" align="center">
 <br>
 <br>
 <h3>What is this tool capable of?</h3>
