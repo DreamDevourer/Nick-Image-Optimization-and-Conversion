@@ -178,7 +178,7 @@ canvas.create_text(
 )
 
 # Listbox to show files loaded rootWindow
-imagesLoaded = ('image.jpg', 'image.jpeg', 'image.png')
+imagesLoaded = files
 list_items = Listbox(
     x=210.0,
     y=115.0,
