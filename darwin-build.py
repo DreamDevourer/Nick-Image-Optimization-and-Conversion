@@ -1,6 +1,7 @@
 """
 This is the setup to generate MacOS package.
 Troubleshooting: sudo chown -R $(whoami) .
+py2applet --make-setup Nick\ -\ Image\ Optimization\ and\ Conversion.py
 """
 
 from setuptools import setup
