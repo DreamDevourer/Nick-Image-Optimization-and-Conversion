@@ -1,4 +1,4 @@
-<h1 align="center">Nick - Image Optimization and Conversion 🗾</h1>
+<h1 align="center">Nick - Image Optimization and Conversion 🏞</h1>
 
 <p align="center">Optimize and convert common bitmap images to WebP format.</p>
 
@@ -6,6 +6,7 @@
   <a href="./LICENSE">License</a>
 </p>
 
+<h3>What is this tool capable of?</h3>
 <p>With this awesome and simple tools you can:</p>
 <ol>
 <li>Pick all images from a specific folder in a mass method (PNG, JPG and JPEG)</li>
