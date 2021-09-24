@@ -269,12 +269,10 @@ Removing status area for now, I need to study more about updating label values d
 # )
 
 # Checkbox (To reduce resolution by half)
-reduceByHalf = StringVar()
+reduceByHalf = IntVar()
 reduceByHalfChck = Checkbutton(
     text="Reduce Resolution?",
     variable=reduceByHalf,
-    onvalue="y",
-    offvalue="n",
     bg="#AC59F3",
     fg="#FFFFFF",
     font=("Mulish Regular", 13 * -1),
@@ -311,9 +309,6 @@ def optimizationFunction():
     confirmFiles = "y"
     confirmDownRes = reduceByHalf
 
-    if confirmDownRes == "y" or confirmDownRes == "Y" or confirmDownRes == "":
-        confirmReduction = True
-
     if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
         for file in files:
             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
@@ -331,7 +326,7 @@ def optimizationFunction():
                 list_items.delete(0, END)
                 list_items.insert(END, file)
                 # If user wants to reduce image resolution by half.
-                if confirmReduction == True:
+                if confirmDownRes == 1:
                     imgOptimize = imgOptimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS)
 
