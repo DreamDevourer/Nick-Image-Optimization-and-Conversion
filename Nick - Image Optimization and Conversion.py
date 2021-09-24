@@ -21,15 +21,15 @@ SUMMARY:
 """
 
 """ 🎯 TO DO:
-- [] Make a Listbox
+- [x] Make a Listbox
 - [x] Fix icons not loading properly
 - [x] Make the optimization script
 - [x] Make the conversion script
-- [] Connect everything to the tk UI
---- [] Make the app load all possible images inside the Listbox
---- [] When the user clicks the Make Magic button, run defs
+- [x] Connect everything to the tk UI
+--- [x] Make the app load all possible images inside the Listbox
+--- [x] When the user clicks the Make Magic button, run defs
 --- [x] Create two defs - one for optimizing and other for converting
---- [] After the optimizing def runs, initiate the convert def.
+--- [x] After the optimizing def runs, initiate the convert def.
 """
 
 # Initial Setup to load assets
