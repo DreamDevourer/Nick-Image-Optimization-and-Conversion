@@ -222,6 +222,9 @@ canvas.create_text(
     font=("Mulish Bold", 36 * -1)
 )
 
+"""
+Removing status area for now, I need to study more about updating label values dinamically.
+"""
 # Progress Icon
 # image_image_5 = PhotoImage(
 #     file=relative_to_assets("image_5.png"))
