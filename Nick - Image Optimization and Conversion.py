@@ -356,7 +356,7 @@ def optimizationFunction():
                 else:
                     print(
                         f"Image: {file}, is not larger enough to reduce resolution.")
-                    
+
                     print(f"Performing standard optimization on {file}")
                     if file.endswith(".png"):
                         imgOptimize.save(str(relative_to_images(
@@ -366,8 +366,11 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
-                
+
                 print(f"{file} optimized!")
+
+            elif file in files != file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
+                print(f"No valid files found in {folderImgs} with {file}")
             else:
                 print(f"{file} is not a PNG or JPG or GIF, skipping")
     else:
