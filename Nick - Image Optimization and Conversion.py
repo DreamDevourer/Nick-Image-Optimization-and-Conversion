@@ -209,7 +209,10 @@ list_items = Listbox(
 list_items.place(relx=0.5, rely=0.5, anchor="center")
 
 for imagesFound in imagesLoaded:
-    list_items.insert(END, imagesFound)
+    if imagesFound.endswith(".png") or imagesFound.endswith(".jpg") or imagesFound.endswith(".jpeg") or imagesFound.endswith(".gif"):
+        list_items.insert(END, imagesFound)
+    else:
+        print(f"{imagesFound} is not a PNG or JPG, skipping...")
 
 canvas.create_text(
     253.0,
@@ -376,7 +379,7 @@ def convertionFunction():
 
     confirmFiles = "y"
 
-    if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
+    if confirmFiles == "y":
         for file in files:
             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
                 print(f"Converting {file} to WebP")
