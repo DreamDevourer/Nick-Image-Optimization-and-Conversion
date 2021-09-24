@@ -269,7 +269,18 @@ Removing status area for now, I need to study more about updating label values d
 # )
 
 # Checkbox (To reduce resolution by half)
-
+reduceByHalf = StringVar()
+reduceByHalfChck = Checkbutton(
+    text="Reduce Resolution?",
+    variable=reduceByHalf,
+    onvalue="y",
+    offvalue="n",
+    bg="#AC59F3",
+    fg="#FFFFFF",
+    font=("Mulish Regular", 13 * -1),
+)
+reduceByHalfChck.deselect()
+reduceByHalfChck.place(relx=0.03, rely=0.7, anchor="nw")
 
 # Logo Icon
 image_image_6 = PhotoImage(
@@ -298,7 +309,7 @@ def optimizationFunction():
     print(
         f"These are all of the files in our current working directory: {files}")
     confirmFiles = "y"
-    confirmDownRes = "y"  # I need to change it in future.
+    confirmDownRes = reduceByHalf
 
     if confirmDownRes == "y" or confirmDownRes == "Y" or confirmDownRes == "":
         confirmReduction = True
