@@ -3,6 +3,7 @@ import os
 import sys
 import pathlib
 import shutil
+import subprocess
 from pathlib import Path
 from tkinter import *
 from tkinter.filedialog import *
@@ -30,7 +31,7 @@ SUMMARY:
 --- [x] When the user clicks the Make Magic button, run defs
 --- [x] Create two defs - one for optimizing and other for converting
 --- [x] After the optimizing def runs, initiate the convert def.
---- [] Open the folder with the optimized images
+--- [x] Open the folder with the optimized images
 """
 
 # Initial Setup to load assets
@@ -315,6 +316,7 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
+
                 # If user don't want to reduce image resolution by half.
                 else:
                     if file.endswith(".png"):
@@ -349,6 +351,10 @@ def convertionFunction():
                 loadImg.save(str(relative_to_images(str(file))) +
                              ".webp", "WEBP", quality=80)
                 print(f"{file} converted to WebP")
+                # open images folder in finder/explorer/nautilus.
+                subprocess.Popen(
+                    ["open", "-R", folderImgs])
+                print(f"Opening {file} in Finder")
             else:
                 print(f"{file} is not a PNG or JPG, skipping...")
     else:
