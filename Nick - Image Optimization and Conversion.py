@@ -4,6 +4,7 @@ import sys
 import pathlib
 import shutil
 import subprocess
+import tkinter as tk
 from pathlib import Path
 from tkinter import *
 from tkinter.filedialog import *
@@ -63,6 +64,12 @@ rootWindow.geometry("980x580")
 rootWindow.configure(bg="#FFFFFF")
 rootWindow.title("Nick - Image Optimization and Conversion")
 rootWindow.iconbitmap(relative_to_assets("icon.ico"))
+
+# check if icon.ico exists inside assets folder [Debug]
+# if os.path.isfile(relative_to_assets("icon.ico")):
+#     print("Icon found!")
+# else:
+#     print("Icon not found!")
 
 # 💬 Variables
 
