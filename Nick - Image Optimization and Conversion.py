@@ -223,32 +223,32 @@ canvas.create_text(
 )
 
 # Progress Icon
-image_image_5 = PhotoImage(
-    file=relative_to_assets("image_5.png"))
-image_5 = canvas.create_image(
-    95.0,
-    260.0,
-    image=image_image_5
-)
+# image_image_5 = PhotoImage(
+#     file=relative_to_assets("image_5.png"))
+# image_5 = canvas.create_image(
+#     95.0,
+#     260.0,
+#     image=image_image_5
+# )
 
-canvas.create_text(
-    37.0,
-    282.0,
-    anchor="nw",
-    text="Progress Status",
-    fill="#FFFFFF",
-    font=("Mulish Regular", 16 * -1)
-)
+# canvas.create_text(
+#     37.0,
+#     282.0,
+#     anchor="nw",
+#     text="Progress Status",
+#     fill="#FFFFFF",
+#     font=("Mulish Regular", 16 * -1)
+# )
 
-# Dynamic label to show the progress
-canvas.create_text(
-    51.0,
-    328.0,
-    anchor="nw",
-    text="Placeholder",
-    fill="#FFFFFF",
-    font=("Mulish SemiBold", 16 * -1)
-)
+# # Dynamic label to show the progress
+# canvas.create_text(
+#     51.0,
+#     328.0,
+#     anchor="nw",
+#     text="Placeholder",
+#     fill="#FFFFFF",
+#     font=("Mulish SemiBold", 16 * -1)
+# )
 
 # Logo Icon
 image_image_6 = PhotoImage(
