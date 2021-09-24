@@ -19,7 +19,7 @@ SUMMARY:
 🌈 UI
 🔖 Load GUI files defs
 ⚙️ Logic and Defs
-# =========== 📜 Check Function
+=========== 📜 Check Function
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
 """
