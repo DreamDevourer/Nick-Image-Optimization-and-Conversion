@@ -30,6 +30,7 @@ SUMMARY:
 --- [x] When the user clicks the Make Magic button, run defs
 --- [x] Create two defs - one for optimizing and other for converting
 --- [x] After the optimizing def runs, initiate the convert def.
+--- [] Open the folder with the optimized images
 """
 
 # Initial Setup to load assets
@@ -310,7 +311,7 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=70)
                         convertionFunction()
-                    if file.endswith(".jpg") or file.endswith(".jpeg"):
+                    if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
@@ -320,7 +321,7 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=70)
                         convertionFunction()
-                    if file.endswith(".jpg") or file.endswith(".jpeg"):
+                    if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
@@ -342,7 +343,7 @@ def convertionFunction():
 
     if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
         for file in files:
-            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
+            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
                 print(f"Converting {file} to WebP")
                 loadImg = Image.open(relative_to_images(str(file)))
                 loadImg.save(str(relative_to_images(str(file))) +
