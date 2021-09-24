@@ -10,6 +10,7 @@ from tkinter.filedialog import *
 from PIL import Image
 from pathlib import Path
 from shutil import copyfile
+from tkinter import messagebox
 
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
@@ -25,6 +26,8 @@ SUMMARY:
 - [x] Make a Listbox
 - [] Make a Scrollbar in the Listbox
 - [] Make a checkbox to reduce image resolution by half.
+- [x] Add message when the process is finished.
+- [x] Add app Icon
 - [x] Fix icons not loading properly
 - [x] Make the optimization script
 - [x] Make the conversion script
@@ -59,6 +62,7 @@ rootWindow.resizable(False, False)
 rootWindow.geometry("980x580")
 rootWindow.configure(bg="#FFFFFF")
 rootWindow.title("Nick - Image Optimization and Conversion")
+rootWindow.iconbitmap(relative_to_assets("icon.ico"))
 
 # 💬 Variables
 
@@ -257,6 +261,9 @@ Removing status area for now, I need to study more about updating label values d
 #     font=("Mulish SemiBold", 16 * -1)
 # )
 
+# Checkbox (To reduce resolution by half)
+
+
 # Logo Icon
 image_image_6 = PhotoImage(
     file=relative_to_assets("image_6.png"))
@@ -357,6 +364,10 @@ def convertionFunction():
                 subprocess.Popen(
                     ["open", "-R", folderImgs])
                 print(f"Opening {file} in Finder")
+                # Show a message window with "Optimization and conversion completed!"
+                messagebox.showinfo(
+                    "Optimization and conversion completed! \n", "All files have been optimized and converted to WebP!")
+                print("All files have been optimized and converted to WebP!")
             else:
                 print(f"{file} is not a PNG or JPG, skipping...")
     else:
