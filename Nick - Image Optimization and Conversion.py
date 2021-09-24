@@ -25,7 +25,7 @@ SUMMARY:
 
 """ 🎯 TO DO:
 - [x] Make a Listbox
-- [] Make a Scrollbar in the Listbox
+- [x] Make a Scrollbar in the Listbox
 - [x] Make a checkbox to reduce image resolution by half.
 - [x] Make a way to detect image resolution and if it is larger than 1366x760, reduce it by half.
 - [x] Add message when the process is finished.
@@ -75,7 +75,6 @@ rootWindow.iconbitmap(relative_to_assets("icon.ico"))
 # 💬 Variables
 
 files = os.listdir(IMAGES_PATH)
-# files = askopenfilename()
 
 # 🌈 UI
 canvas = Canvas(
@@ -194,7 +193,6 @@ canvas.create_text(
 )
 
 # Listbox to show files loaded rootWindow
-imagesLoaded = files
 list_items = Listbox(
     x=210.0,
     y=115.0,
@@ -208,11 +206,9 @@ list_items = Listbox(
 )
 list_items.place(relx=0.5, rely=0.5, anchor="center")
 
-for imagesFound in imagesLoaded:
-    if imagesFound.endswith(".png") or imagesFound.endswith(".jpg") or imagesFound.endswith(".jpeg") or imagesFound.endswith(".gif"):
-        list_items.insert(END, imagesFound)
-    else:
-        print(f"{imagesFound} is not a PNG or JPG, skipping...")
+for file in files:
+    if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
+        list_items.insert(END, file)
 
 canvas.create_text(
     253.0,
@@ -307,8 +303,25 @@ folderImgs = entry_1.get()
 print(folderImgs)
 
 
+def updateListbox():
+    global files
+
+    updateFilesFound = os.listdir(IMAGES_PATH)
+    files = updateFilesFound
+
+    for file in files:
+        if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
+            list_items.delete(0, END)
+            list_items.insert(END, file)
+            print(f"Found valid images in {folderImgs} with {file}.")
+
+
 def optimizationFunction():
     global reduceByHalf
+    global files
+
+    updateListbox()
+
     print(
         f"These are all of the files in our current working directory: {files}")
     confirmFiles = "y"
@@ -369,10 +382,10 @@ def optimizationFunction():
 
                 print(f"{file} optimized!")
 
-            elif file in files != file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
-                print(f"No valid files found in {folderImgs} with {file}")
             else:
-                print(f"{file} is not a PNG or JPG or GIF, skipping")
+                print(
+                    f"No valid files found in {folderImgs} with {file}... Checking again.")
+                updateListbox()
     else:
         print("Exiting...")
         sys.exit()
@@ -394,7 +407,7 @@ def convertionFunction():
                 loadImg.save(str(relative_to_images(str(file))) +
                              ".webp", "WEBP", quality=80)
                 print(f"{file} converted to WebP")
-                # open images folder in finder/explorer/nautilus.
+                # Open images folder in default OS file manager.
                 subprocess.Popen(
                     ["open", "-R", folderImgs])
                 print(f"Opening {file} in Finder")
