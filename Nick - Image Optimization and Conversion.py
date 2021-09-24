@@ -19,6 +19,7 @@ SUMMARY:
 🌈 UI
 🔖 Load GUI files defs
 ⚙️ Logic and Defs
+# =========== 📜 Check Function
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
 """
@@ -156,6 +157,7 @@ def loadFolderForImg():
     printableFiles = askdirectory(initialdir=IMAGES_PATH)
     files = os.listdir(printableFiles)
     entry_DefPath.set(str(printableFiles))
+    updateListbox()
 
 
 # Entry to load files
@@ -297,7 +299,7 @@ Forked on September 23, 2021.
 https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
-# =========== 🧬 Optimization Functions ===========
+# =========== 📜 Check Function ===========
 
 folderImgs = entry_1.get()
 print(folderImgs)
@@ -315,6 +317,7 @@ def updateListbox():
             list_items.insert(END, file)
             print(f"Found valid images in {folderImgs} with {file}.")
 
+# =========== 🧬 Optimization Functions ===========
 
 def optimizationFunction():
     global reduceByHalf
