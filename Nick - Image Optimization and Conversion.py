@@ -23,6 +23,8 @@ SUMMARY:
 
 """ 🎯 TO DO:
 - [x] Make a Listbox
+- [] Make a Scrollbar in the Listbox
+- [] Make a checkbox to reduce image resolution by half.
 - [x] Fix icons not loading properly
 - [x] Make the optimization script
 - [x] Make the conversion script
