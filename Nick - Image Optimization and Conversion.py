@@ -15,6 +15,7 @@ from tkinter import messagebox
 
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
+
 💬 Variables
 🌈 UI
 🔖 Load GUI files defs
@@ -22,9 +23,8 @@ SUMMARY:
 =========== 📜 Check Function
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
-"""
 
-""" 🎯 TO DO:
+🎯 TO DO:
 - [x] Make a Listbox
 - [x] Make a Scrollbar in the Listbox
 - [x] Make a checkbox to reduce image resolution by half.
