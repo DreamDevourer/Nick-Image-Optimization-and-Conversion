@@ -26,7 +26,8 @@ SUMMARY:
 """ 🎯 TO DO:
 - [x] Make a Listbox
 - [] Make a Scrollbar in the Listbox
-- [] Make a checkbox to reduce image resolution by half.
+- [x] Make a checkbox to reduce image resolution by half.
+- [] Make a way to detect image resolution and if it is larger than 1366x760, reduce it by half.
 - [x] Add message when the process is finished.
 - [x] Add app Icon
 - [x] Fix icons not loading properly
@@ -304,14 +305,16 @@ print(folderImgs)
 
 
 def optimizationFunction():
+    global reduceByHalf
     print(
         f"These are all of the files in our current working directory: {files}")
     confirmFiles = "y"
-    confirmDownRes = reduceByHalf
+    confirmDownRes = IntVar()
+    confirmDownRes = reduceByHalf.get()
 
-    if confirmFiles == "y" or confirmFiles == "Y" or confirmFiles == "":
+    if confirmFiles == "y":
         for file in files:
-            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg"):
+            if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".gif"):
 
                 # Backup operation
                 shutil.copy(
@@ -321,14 +324,21 @@ def optimizationFunction():
                 print(f"Copying {file} to backup folder")
 
                 print(f"Optimizing {file}")
+
                 imgOptimize = Image.open(relative_to_images(str(file)))
                 imgWidth, imgHeight = imgOptimize.size
+                print(f"Image size: {imgWidth} x {imgHeight}")
+                print(f"The state of resolution option is: {confirmDownRes}")
+
                 list_items.delete(0, END)
                 list_items.insert(END, file)
-                # If user wants to reduce image resolution by half.
-                if confirmDownRes == 1:
+
+                # If confirmDownRes = 1, imgWidth and imgHeight are larger than 1366x768 reduce the resolution by half.
+                if imgWidth > 1366 and imgHeight > 768 and confirmDownRes == 1:
                     imgOptimize = imgOptimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS)
+                    print(f"Reducing image resolution by half of {file}")
+                    print(f"Optimized {file}")
 
                     if file.endswith(".png"):
                         imgOptimize.save(str(relative_to_images(
@@ -349,9 +359,10 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
+                print(f"Performing standard optimization on {file}")
                 print(f"{file} optimized!")
             else:
-                print(f"{file} is not a PNG or JPG, skipping")
+                print(f"{file} is not a PNG or JPG or GIF, skipping")
     else:
         print("Exiting...")
         sys.exit()
