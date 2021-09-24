@@ -273,7 +273,7 @@ Removing status area for now, I need to study more about updating label values d
 # Checkbox (To reduce resolution by half)
 reduceByHalf = IntVar()
 reduceByHalfChck = Checkbutton(
-    text="Reduce Resolution?",
+    text="Smart Scale Mode",
     variable=reduceByHalf,
     bg="#AC59F3",
     fg="#FFFFFF",
