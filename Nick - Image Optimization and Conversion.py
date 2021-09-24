@@ -27,7 +27,7 @@ SUMMARY:
 - [x] Make a Listbox
 - [] Make a Scrollbar in the Listbox
 - [x] Make a checkbox to reduce image resolution by half.
-- [] Make a way to detect image resolution and if it is larger than 1366x760, reduce it by half.
+- [x] Make a way to detect image resolution and if it is larger than 1366x760, reduce it by half.
 - [x] Add message when the process is finished.
 - [x] Add app Icon
 - [x] Fix icons not loading properly
@@ -354,6 +354,10 @@ def optimizationFunction():
 
                 # If user don't want to reduce image resolution by half.
                 else:
+                    print(
+                        f"Image: {file}, is not larger enough to reduce resolution.")
+                    
+                    print(f"Performing standard optimization on {file}")
                     if file.endswith(".png"):
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=70)
@@ -362,7 +366,7 @@ def optimizationFunction():
                         imgOptimize.save(str(relative_to_images(
                             str(file))), optimize=True, quality=80)
                         convertionFunction()
-                print(f"Performing standard optimization on {file}")
+                
                 print(f"{file} optimized!")
             else:
                 print(f"{file} is not a PNG or JPG or GIF, skipping")
