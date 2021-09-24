@@ -9,7 +9,7 @@
 <h3>What is this tool capable of?</h3>
 <p>With this awesome and simple tools you can:</p>
 <ol>
-<li>Pick all images from a specific folder in a mass method (PNG, JPG and JPEG)</li>
+<li>Pick all images from a specific folder in a mass method (PNG, Gif, JPG and JPEG)</li>
 <li>Then remove unnecessary Metadata</li>
 <li>Optimize RGB color channels</li>
 <li>Compress all images in lossless algorithm</li>
