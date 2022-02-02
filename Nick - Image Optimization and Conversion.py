@@ -4,14 +4,26 @@ import sys
 import pathlib
 import shutil
 import subprocess
-import tkinter as tk
 from pathlib import Path
-from tkinter import *
-from tkinter.filedialog import *
+from tkinter import (
+    Tk,
+    Canvas,
+    Button,
+    messagebox,
+    IntVar,
+    StringVar,
+    END,
+    Listbox,
+    PhotoImage,
+    Entry,
+    Checkbutton,
+)
+from tkinter.filedialog import askdirectory
 from PIL import Image
 from pathlib import Path
 from shutil import copyfile
 from tkinter import messagebox
+import re
 
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
@@ -24,22 +36,6 @@ SUMMARY:
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
 
-🎯 TO DO:
-- [x] Make a Listbox
-- [x] Make a Scrollbar in the Listbox
-- [x] Make a checkbox to reduce image resolution by half.
-- [x] Make a way to detect image resolution and if it is larger than 1366x760, reduce it by half.
-- [x] Add message when the process is finished.
-- [x] Add app Icon
-- [x] Fix icons not loading properly
-- [x] Make the optimization script
-- [x] Make the conversion script
-- [x] Connect everything to the tk UI
---- [x] Make the app load all possible images inside the Listbox
---- [x] When the user clicks the Make Magic button, run defs
---- [x] Create two defs - one for optimizing and other for converting
---- [x] After the optimizing def runs, initiate the convert def.
---- [x] Open the folder with the optimized images
 """
 
 # Initial Setup to load assets
@@ -66,12 +62,6 @@ rootWindow.geometry("980x580")
 rootWindow.configure(bg="#FFFFFF")
 rootWindow.title("Nick - Image Optimization and Conversion")
 rootWindow.iconbitmap(relative_to_assets("icon.ico"))
-
-# check if icon.ico exists inside assets folder [Debug]
-# if os.path.isfile(relative_to_assets("icon.ico")):
-#     print("Icon found!")
-# else:
-#     print("Icon not found!")
 
 # 💬 Variables
 
@@ -266,12 +256,21 @@ def updateListbox():
     files = updateFilesFound
 
     for file in files:
+
+        # regular expression to replace spaces to underlines and remove any digits.
+        fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+
         if (
             file.endswith(".png")
             or file.endswith(".jpg")
             or file.endswith(".jpeg")
             or file.endswith(".gif")
         ):
+            # rename all files to replace spaces to underlines.
+            os.rename(
+                os.path.join(folderImgs, file),
+                os.path.join(folderImgs, fileName),
+            )
             list_items.delete(0, END)
             list_items.insert(END, file)
             print(f"Found valid images in {folderImgs} with {file}.")
@@ -290,9 +289,13 @@ def optimizationFunction():
     confirmFiles = "y"
     confirmDownRes = IntVar()
     confirmDownRes = reduceByHalf.get()
+    isOptReady = False
 
     if confirmFiles == "y":
         for file in files:
+
+            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+
             if (
                 file.endswith(".png")
                 or file.endswith(".jpg")
@@ -300,80 +303,88 @@ def optimizationFunction():
                 or file.endswith(".gif")
             ):
 
+                print(f"Renamed {file} to {fileName}")
+
                 # Backup operation
                 shutil.copy(
-                    f"{folderImgs}/{file}", f"{folderImgs}/backup/_backup_{file}"
+                    f"{folderImgs}/{fileName}",
+                    f"{folderImgs}/backup/_backup_{fileName}",
                 )
-                print(f"Copying {file} to backup folder")
+                print(f"Copying {fileName} to backup folder")
 
-                print(f"Optimizing {file}")
+                print(f"Optimizing {fileName}")
 
-                imgOptimize = Image.open(relative_to_images(str(file)))
+                imgOptimize = Image.open(relative_to_images(str(fileName)))
                 imgWidth, imgHeight = imgOptimize.size
                 print(f"Image size: {imgWidth} x {imgHeight}")
                 print(f"The state of resolution option is: {confirmDownRes}")
 
                 list_items.delete(0, END)
-                list_items.insert(END, file)
+                list_items.insert(END, fileName)
 
                 # If confirmDownRes = 1, imgWidth and imgHeight are larger than 1366x768 reduce the resolution by half.
                 if imgWidth > 1366 and imgHeight > 768 and confirmDownRes == 1:
                     imgOptimize = imgOptimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
-                    print(f"Reducing image resolution by half of {file}")
-                    print(f"Optimized {file}")
+                    print(f"Reducing image resolution by half of {fileName}")
+                    print(f"Optimized {fileName}")
 
                     if file.endswith(".png"):
                         imgOptimize.save(
-                            str(relative_to_images(str(file))),
+                            str(relative_to_images(str(fileName))),
                             optimize=True,
                             quality=70,
                         )
-                        convertionFunction()
+                        isOptReady = True
                     if (
                         file.endswith(".jpg")
                         or file.endswith(".jpeg")
                         or file.endswith(".gif")
                     ):
                         imgOptimize.save(
-                            str(relative_to_images(str(file))),
+                            str(relative_to_images(str(fileName))),
                             optimize=True,
                             quality=80,
                         )
-                        convertionFunction()
+                        isOptReady = True
 
                 # If user don't want to reduce image resolution by half.
                 else:
-                    print(f"Image: {file}, is not larger enough to reduce resolution.")
+                    print(
+                        f"Image: {fileName}, is not larger enough to reduce resolution."
+                    )
 
-                    print(f"Performing standard optimization on {file}")
-                    if file.endswith(".png"):
+                    print(f"Performing standard optimization on {fileName}")
+                    if fileName.endswith(".png"):
                         imgOptimize.save(
-                            str(relative_to_images(str(file))),
+                            str(relative_to_images(str(fileName))),
                             optimize=True,
                             quality=70,
                         )
-                        convertionFunction()
+                        isOptReady = True
                     if (
-                        file.endswith(".jpg")
-                        or file.endswith(".jpeg")
-                        or file.endswith(".gif")
+                        fileName.endswith(".jpg")
+                        or fileName.endswith(".jpeg")
+                        or fileName.endswith(".gif")
                     ):
                         imgOptimize.save(
-                            str(relative_to_images(str(file))),
+                            str(relative_to_images(str(fileName))),
                             optimize=True,
                             quality=80,
                         )
-                        convertionFunction()
+                        isOptReady = True
 
-                print(f"{file} optimized!")
+                print(f"{fileName} optimized!")
 
             else:
                 print(
-                    f"No valid files found in {folderImgs} with {file}... Checking again."
+                    f"No valid files found in {folderImgs} with {fileName}... Checking again."
                 )
-                updateListbox()
+
+        if isOptReady == True:
+            convertionFunction()
+            updateListbox()
     else:
         print("Exiting...")
         sys.exit()
@@ -389,26 +400,49 @@ def convertionFunction():
 
     if confirmFiles == "y":
         for file in files:
+
+            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+
             if (
-                file.endswith(".png")
-                or file.endswith(".jpg")
-                or file.endswith(".jpeg")
-                or file.endswith(".gif")
+                fileName.endswith(".png")
+                or fileName.endswith(".jpg")
+                or fileName.endswith(".jpeg")
+                or fileName.endswith(".gif")
             ):
-                print(f"Converting {file} to WebP")
-                loadImg = Image.open(relative_to_images(str(file)))
+                print(f"Converting {fileName} to WebP")
+                loadImg = Image.open(relative_to_images(str(fileName)))
+
+                # remove ".png", ".jpg", ".jpeg", ".gif" from fileName
+                if fileName.endswith(".png"):
+                    DeltafileName = fileName.replace(".png", "")
+                if fileName.endswith(".jpg"):
+                    DeltafileName = fileName.replace(".jpg", "")
+                if fileName.endswith(".jpeg"):
+                    DeltafileName = fileName.replace(".jpeg", "")
+                if fileName.endswith(".gif"):
+                    DeltafileName = fileName.replace(".gif", "")
+
                 loadImg.save(
-                    str(relative_to_images(str(file))) + ".webp", "WEBP", quality=80
+                    str(relative_to_images(str(DeltafileName))) + ".webp", "WEBP", quality=80
                 )
-                print(f"{file} converted to WebP")
-                # Open images folder in default OS file manager.
-                subprocess.Popen(["open", "-R", folderImgs])
-                print(f"Opening {file} in Finder")
+                print(f"{fileName} converted to WebP")
                 print("All files have been optimized and converted to WebP!")
+
+                if (
+                    fileName.endswith(".png")
+                    or fileName.endswith(".jpg")
+                    or fileName.endswith(".jpeg")
+                    or fileName.endswith(".gif")
+                ):
+                    # Delete original file
+                    print(f"Deleting {fileName}")
+                    os.remove(f"{folderImgs}/{fileName}")
+
             else:
-                print(f"{file} is not a PNG or JPG, skipping...")
+                print(f"{fileName} is not a PNG or JPG, skipping...")
 
         # Show a message window with "Optimization and conversion completed!"
+        subprocess.Popen(["open", "-R", folderImgs])
         messagebox.showinfo(
             "Optimization and conversion completed! \n",
             "All files have been optimized and converted to WebP!",
@@ -418,4 +452,5 @@ def convertionFunction():
         sys.exit()
 
 
-rootWindow.mainloop()
+if __name__ == "__main__":
+    rootWindow.mainloop()
