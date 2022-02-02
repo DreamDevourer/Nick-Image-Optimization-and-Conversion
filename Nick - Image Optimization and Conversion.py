@@ -5,6 +5,12 @@ import pathlib
 import shutil
 import subprocess
 from pathlib import Path
+from PIL import Image
+from pathlib import Path
+from shutil import copyfile
+import re
+from tkinter import messagebox
+from tkinter.filedialog import askdirectory
 from tkinter import (
     Tk,
     Canvas,
@@ -18,12 +24,6 @@ from tkinter import (
     Entry,
     Checkbutton,
 )
-from tkinter.filedialog import askdirectory
-from PIL import Image
-from pathlib import Path
-from shutil import copyfile
-from tkinter import messagebox
-import re
 
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
