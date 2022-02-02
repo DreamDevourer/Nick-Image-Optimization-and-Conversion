@@ -188,37 +188,6 @@ canvas.create_text(
     font=("Mulish Bold", 36 * -1),
 )
 
-"""
-Removing status area for now, I need to study more about updating label values dinamically.
-"""
-# Progress Icon
-# image_image_5 = PhotoImage(
-#     file=relative_to_assets("image_5.png"))
-# image_5 = canvas.create_image(
-#     95.0,
-#     260.0,
-#     image=image_image_5
-# )
-
-# canvas.create_text(
-#     37.0,
-#     282.0,
-#     anchor="nw",
-#     text="Progress Status",
-#     fill="#FFFFFF",
-#     font=("Mulish Regular", 16 * -1)
-# )
-
-# # Dynamic label to show the progress
-# canvas.create_text(
-#     51.0,
-#     328.0,
-#     anchor="nw",
-#     text="Placeholder",
-#     fill="#FFFFFF",
-#     font=("Mulish SemiBold", 16 * -1)
-# )
-
 # Checkbox (To reduce resolution by half)
 reduceByHalf = IntVar()
 reduceByHalfChck = Checkbutton(
@@ -437,7 +406,17 @@ def convertionFunction():
                     # Delete original file
                     print(f"Deleting {fileName}")
                     os.remove(f"{folderImgs}/{fileName}")
+            
 
+            # Experimental:
+            # elif fileName.endswith(".webp"):
+            #         OscarfileName = re.sub(r"\_[_][_]|\_", " ", fileName)
+
+            #         print(f"Renaming {fileName} to {OscarfileName}")
+            #         os.rename(
+            #             f"{folderImgs}/{fileName}",
+            #             f"{folderImgs}/{OscarfileName}",
+            #         )
             else:
                 print(f"{fileName} is not a PNG or JPG, skipping...")
 
