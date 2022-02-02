@@ -308,6 +308,11 @@ def optimizationFunction():
     confirmDownRes = IntVar()
     confirmDownRes = reduceByHalf.get()
 
+    # check if backup folder exists inside images folder
+    if not os.path.exists(f"{folderImgs}/backup"):
+        os.mkdir(f"{folderImgs}/backup")
+        print("Backup folder created.")
+
     updateListbox()
 
     for file in files:
