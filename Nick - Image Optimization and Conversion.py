@@ -1,6 +1,7 @@
-import PIL
+import re
 import os
 import sys
+import PIL
 import pathlib
 import shutil
 import subprocess
@@ -8,7 +9,6 @@ from pathlib import Path
 from PIL import Image
 from pathlib import Path
 from shutil import copyfile
-import re
 from tkinter import messagebox
 from tkinter.filedialog import askdirectory
 from tkinter import (
