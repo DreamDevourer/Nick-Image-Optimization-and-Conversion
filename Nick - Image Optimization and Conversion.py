@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 import re
 import os
-import sys
 import PIL
 import pathlib
-import random
 import shutil
 import subprocess
 from pathlib import Path
 from PIL import Image
 from pathlib import Path
-from shutil import copyfile
 from tkinter import messagebox
 from tkinter.filedialog import askdirectory
 from tkinter import (
@@ -72,7 +69,6 @@ rootWindow.iconbitmap(relative_to_assets("icon.ico"))
 # 💬 Variables
 
 files = os.listdir(IMAGES_PATH)
-phoneticAlphabet = ["Alpha","Bravo","Charlie","Delta","Echo","Foxtrot","Golf","Hotel","India","Juliet","Kilo","Lima","Mike","November","Oscar","Papa","Quebec","Romeo","Sierra","Tango","Uniform","Victor","Whiskey","X-Ray","Yankee","Zulu"]
 
 # 🌈 UI
 canvas = Canvas(
@@ -270,7 +266,6 @@ def updateListbox():
             # rename all files to replace spaces to underlines.
             os.rename(
                 os.path.join(folderImgs, file),
-                # os.path.join(folderImgs, f"{random.choice(phoneticAlphabet)}"+fileName),
                 os.path.join(folderImgs, fileName),
             )
             list_items.delete(0, END)
