@@ -192,6 +192,7 @@ try:
         )
         Images_PATH = Path(f"{printableFiles}")
         files = os.listdir(Images_PATH)
+        quickUpdateList()
 
     def pickGenUp():
         """Load new folder after browser"""
@@ -317,6 +318,20 @@ try:
     # =========== 📜 Check Function ===========
 
     folderImgs = entry_1.get()
+
+    def quickUpdateList():
+        global files
+        for file in files:
+            if (
+                file.endswith(".png")
+                or file.endswith(".jpg")
+                or file.endswith(".jpeg")
+                or file.endswith(".gif")
+            ):
+                list_items.insert(END, file)
+
+            if file.endswith(".webp") and "Optimized" not in file:
+                list_items.insert(END, file)
 
     def updateListbox():
         """Update the list box with all files found in the folder"""
@@ -540,6 +555,7 @@ try:
             message="All files have been optimized and converted to WebP!",
             icon="info",
         )
+        quickUpdateList()
 
 except (
     RuntimeError,
