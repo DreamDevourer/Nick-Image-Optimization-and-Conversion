@@ -5,6 +5,8 @@ import PIL
 import pathlib
 import shutil
 import subprocess
+import time
+import logs.current as logVerChecker
 from pathlib import Path
 from PIL import Image
 from pathlib import Path
@@ -41,8 +43,12 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
+currentVersion = "v1.0.0 - Release"
+
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
+Images_PATH = OUTPUT_PATH / Path("./images")
+LOGS_PATH = OUTPUT_PATH / Path("./logs")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -50,12 +56,55 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-Images_PATH = OUTPUT_PATH / Path("images")
-
-
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
     return Images_PATH / Path(path)
+
+
+def relative_to_logs(path: str) -> Path:
+    """Return a path relative to the logs folder."""
+    return LOGS_PATH / Path(path)
+
+
+def logRoutine(log: str):
+    """Write strings to the log file and if debug is enabled, print it to console."""
+
+    debugMode = True
+    currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
+    logHeader = f""" I.O.C - {currentVersion}
+    ===================================================
+    LOG FILE MADE FOR DEBUG PURPOSES
+    ===================================================
+
+    """
+
+    # Check if "ioc.log" exists, if not create this file.
+    if not os.path.exists(relative_to_logs("ioc.log")):
+        open(f"{relative_to_logs('ioc.log')}", "w+")
+        # append logHeader to the file.
+        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+            logFile.write(logHeader)
+
+    if currentVersion != logVerChecker.loggedVer:
+        # Delete everything inside the file and append logVerChecker.loggedVer to the file.
+        with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
+            logFile.write(logVerChecker.loggedVer)
+        
+        logVerChecker.loggedVer = currentVersion
+
+    # if the file exceeds 1000 lines, delete everything and append logHeader to the file.
+    with open(f"{relative_to_logs('ioc.log')}", "r") as logFile:
+        if len(logFile.readlines()) > 1000:
+            with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
+                logFile.write(logHeader)
+
+    # Append the log to the file.
+    with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+        logFile.write(f"{currentTime} - {log}\n")
+        print(f"DEBUG LOG: {log}")
+
+    if debugMode == True:
+        return print(log)
 
 
 # 🧝🏻‍♀️ Tk Window Settings
@@ -117,6 +166,7 @@ button_2.place(x=812.0, y=41.0, width=135.0, height=46.0)
 
 # 🔖 Load GUI files defs
 
+
 def loadFolderForImg():
     """Load the folder with images"""
 
@@ -130,9 +180,12 @@ def loadFolderForImg():
     # Regular expression to pick all words after the last "/".
     # folderImgs = re.findall(r"[^\\\/]+$", printableFiles)
     entry_DefPath.set(str(printableFiles))
-    print(f"indide loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}")
+    logRoutine(
+        f"indide loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}"
+    )
     Images_PATH = Path(f"{printableFiles}")
     files = os.listdir(Images_PATH)
+
 
 def pickGenUp():
     """Load new folder after browser"""
@@ -140,7 +193,7 @@ def pickGenUp():
     global printableFiles
     printableFiles = entry_DefPath.get()
 
-    print(f"indide pickGenUp: {printableFiles}")
+    logRoutine(f"indide pickGenUp: {printableFiles}")
     return printableFiles
 
 
@@ -250,7 +303,7 @@ def cleaningRoutine():
             or fileName.endswith(".gif")
         ):
             # Delete original file
-            print(f"Deleting {fileName}")
+            logRoutine(f"Deleting {fileName}")
             os.remove(f"{folderImgs}/{fileName}")
 
 
@@ -266,11 +319,11 @@ def updateListbox():
     global folderImgs
 
     folderImgs = entry_1.get()
-    
+
     # check if backup folder exists inside images folder
     if not os.path.exists(f"{folderImgs}/backup"):
         os.mkdir(f"{folderImgs}/backup")
-        print("Backup folder created.")
+        logRoutine("Backup folder created.")
 
     updateFilesFound = os.listdir(Images_PATH)
     files = updateFilesFound
@@ -293,7 +346,7 @@ def updateListbox():
             )
             list_items.delete(0, END)
             list_items.insert(END, fileName)
-            print(f"Found valid images in {folderImgs} with {file}.")
+            logRoutine(f"Found valid images in {folderImgs} with {file}.")
 
         if file.endswith(".webp") and "Optimized" not in file:
             NovemberfileName = file.replace(".webp", "")
@@ -301,7 +354,7 @@ def updateListbox():
             OscarfileName = re.sub(r"\_[_][_]|\_|\_[_]", " ", NovemberfileName)
             OscarfileName = re.sub(r"^\s+|\s+$", "", OscarfileName)
 
-            print(f"Renaming {file} to {OscarfileName}")
+            logRoutine(f"Renaming {file} to {OscarfileName}")
 
             if OscarfileName == " " or OscarfileName == "":
                 os.rename(
@@ -327,14 +380,14 @@ def optimizationFunction():
     global reduceByHalf
     global files
 
-    print(f"These are all of the files in our current working directory: {files}")
+    logRoutine(f"These are all of the files in our current working directory: {files}")
     confirmDownRes = IntVar()
     confirmDownRes = reduceByHalf.get()
 
     # check if backup folder exists inside images folder
     if not os.path.exists(f"{folderImgs}/backup"):
         os.mkdir(f"{folderImgs}/backup")
-        print("Backup folder created.")
+        logRoutine("Backup folder created.")
 
     updateListbox()
 
@@ -349,19 +402,19 @@ def optimizationFunction():
             or file.endswith(".gif")
         ):
 
-            print(f"Renamed {file} to {fileName}")
+            logRoutine(f"Renamed {file} to {fileName}")
             # Backup operation
             shutil.copy(
                 f"{folderImgs}/{fileName}", f"{folderImgs}/backup/_backup_{fileName}"
             )
-            print(f"Copying {fileName} to backup folder")
+            logRoutine(f"Copying {fileName} to backup folder")
 
-            print(f"Optimizing {fileName}")
+            logRoutine(f"Optimizing {fileName}")
 
             imgOptimize = Image.open(relative_to_images(str(fileName)))
             imgWidth, imgHeight = imgOptimize.size
-            print(f"Image size: {imgWidth} x {imgHeight}")
-            print(f"The state of resolution option is: {confirmDownRes}")
+            logRoutine(f"Image size: {imgWidth} x {imgHeight}")
+            logRoutine(f"The state of resolution option is: {confirmDownRes}")
 
             list_items.delete(0, END)
             list_items.insert(END, fileName)
@@ -375,8 +428,8 @@ def optimizationFunction():
                 imgOptimize = imgOptimize.resize(
                     (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                 )
-                print(f"Reducing image resolution by half of {fileName}")
-                print(f"Optimized {fileName}")
+                logRoutine(f"Reducing image resolution by half of {fileName}")
+                logRoutine(f"Optimized {fileName}")
 
                 if file.endswith(".png"):
                     imgOptimize.save(
@@ -397,9 +450,11 @@ def optimizationFunction():
 
             # If user don't want to reduce image resolution by half.
             else:
-                print(f"Image: {fileName}, is not larger enough to reduce resolution.")
+                logRoutine(
+                    f"Image: {fileName}, is not larger enough to reduce resolution."
+                )
 
-                print(f"Performing standard optimization on {fileName}")
+                logRoutine(f"Performing standard optimization on {fileName}")
                 if fileName.endswith(".png"):
                     imgOptimize.save(
                         str(relative_to_images(str(fileName))),
@@ -418,10 +473,10 @@ def optimizationFunction():
                         quality=80,
                     )
 
-            print(f"{fileName} optimized!")
+            logRoutine(f"{fileName} optimized!")
 
         else:
-            print(
+            logRoutine(
                 f"No valid files found in {folderImgs} with {fileName}... Checking again."
             )
 
@@ -435,7 +490,7 @@ def optimizationFunction():
 def convertionFunction():
     """Convert all images to webp format."""
 
-    print(f"These are all of the files in our current working directory: {files}")
+    logRoutine(f"These are all of the files in our current working directory: {files}")
 
     for file in files:
 
@@ -447,7 +502,7 @@ def convertionFunction():
             or fileName.endswith(".jpeg")
             or fileName.endswith(".gif")
         ):
-            print(f"Converting {fileName} to WebP")
+            logRoutine(f"Converting {fileName} to WebP")
             loadImg = Image.open(relative_to_images(str(fileName)))
 
             # remove ".png", ".jpg", ".jpeg", ".gif" from fileName
@@ -465,10 +520,10 @@ def convertionFunction():
                 "WEBP",
                 quality=80,
             )
-            print(f"{fileName} converted to WebP")
+            logRoutine(f"{fileName} converted to WebP")
 
         else:
-            print(f"{fileName} is not a eligible, skipping...")
+            logRoutine(f"{fileName} is not a eligible, skipping...")
 
     # Show a message window with "Optimization and conversion completed!"
     cleaningRoutine()
