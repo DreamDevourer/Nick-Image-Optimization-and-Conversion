@@ -7,6 +7,9 @@ Bin/
 .AppleDouble
 .LSOverride
 
+/ioc.log
+*.log
+
 nohup.out
 
 # Files that might appear in the root of a volume
@@ -65,3 +68,4 @@ $RECYCLE.BIN/
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 *.out
+logs/ioc.log
