@@ -2,3 +2,10 @@ v1.0.1 - Dev
     ===================================================
     LOG FILE MADE FOR DEBUG PURPOSES
     ===================================================
+02-03-2022 -> 13:44:11 - inside loadFolderForImg: ,  and 
+02-03-2022 -> 13:44:12 - These are all of the files in our current working directory: ['.DS_Store', 'LICENSE', 'requirements.txt', 'images', 'Nick - Image Optimization and Conversion.py', 'README.md', 'logs', '.gitignore', '.venv', 'Sample.png', '.git', '.vscode', 'open IOC.sh', 'assets', 'open IOC.bat', 'open IOC.command']
+02-03-2022 -> 13:47:00 - inside loadFolderForImg: ,  and 
+02-03-2022 -> 13:47:05 - These are all of the files in our current working directory: ['.DS_Store', 'LICENSE', 'requirements.txt', 'images', 'Nick - Image Optimization and Conversion.py', 'README.md', 'logs', '.gitignore', '.venv', 'Sample.png', '.git', '.vscode', 'open IOC.sh', 'assets', 'open IOC.bat', 'open IOC.command']
+02-03-2022 -> 13:47:53 - inside loadFolderForImg: ,  and 
+02-03-2022 -> 13:48:35 - inside loadFolderForImg: ,  and 
+02-03-2022 -> 13:49:00 - inside loadFolderForImg: /Users/dreamdevourer/Documents/Source Codes/Personal/Nick - Image Optimization and Conversion/build/images, /Users/dreamdevourer/Documents/Source Codes/Personal/Nick - Image Optimization and Conversion/build/images and /Users/dreamdevourer/Documents/Source Codes/Personal/Nick - Image Optimization and Conversion/build/images

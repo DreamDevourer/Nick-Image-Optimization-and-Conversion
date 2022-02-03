@@ -167,7 +167,6 @@ try:
 
     # 🔖 Load GUI files defs
 
-
     def loadFolderForImg():
         """Load the folder with images"""
 
@@ -178,15 +177,21 @@ try:
 
         # open dialog box to select folder
         printableFiles = askdirectory(initialdir=Images_PATH)
+
+        # If the user cancel it will fallback to the default folder.
+        if printableFiles == "" or printableFiles == " ":
+            printableFiles = Images_PATH
+            entry_DefPath.set(str(Images_PATH))
+        else:
+            entry_DefPath.set(str(printableFiles))
+
         # Regular expression to pick all words after the last "/".
         # folderImgs = re.findall(r"[^\\\/]+$", printableFiles)
-        entry_DefPath.set(str(printableFiles))
         logRoutine(
             f"inside loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}"
         )
         Images_PATH = Path(f"{printableFiles}")
         files = os.listdir(Images_PATH)
-
 
     def pickGenUp():
         """Load new folder after browser"""
@@ -197,14 +202,17 @@ try:
         logRoutine(f"inside pickGenUp: {printableFiles}")
         return printableFiles
 
-
     # Entry to load files
     entry_DefPath = StringVar()
     entry_DefPath.set(str(Images_PATH))
     entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
     entry_bg_1 = canvas.create_image(567.5, 74.0, image=entry_image_1)
     entry_1 = Entry(
-        bd=0, bg="#FFFFFF", fg="#000000", textvariable=entry_DefPath, highlightthickness=0
+        bd=0,
+        bg="#FFFFFF",
+        fg="#000000",
+        textvariable=entry_DefPath,
+        highlightthickness=0,
     )
     entry_1.place(x=364.0, y=41.0, width=407.0, height=44.0)
 
@@ -290,7 +298,6 @@ try:
     https://github.com/DreamDevourer/Python-Fundamentals-Study
     """
 
-
     def cleaningRoutine():
         """Removes any legacy image"""
 
@@ -307,11 +314,9 @@ try:
                 logRoutine(f"Deleting {fileName}")
                 os.remove(f"{folderImgs}/{fileName}")
 
-
     # =========== 📜 Check Function ===========
 
     folderImgs = entry_1.get()
-
 
     def updateListbox():
         """Update the list box with all files found in the folder"""
@@ -371,9 +376,7 @@ try:
                 list_items.delete(0, END)
                 list_items.insert(END, OscarfileName)
 
-
     # =========== 🧬 Optimization Functions ===========
-
 
     def optimizationFunction():
         """Optimization function to reduce the resolution of the images and remove images bloatware."""
@@ -381,7 +384,9 @@ try:
         global reduceByHalf
         global files
 
-        logRoutine(f"These are all of the files in our current working directory: {files}")
+        logRoutine(
+            f"These are all of the files in our current working directory: {files}"
+        )
         confirmDownRes = IntVar()
         confirmDownRes = reduceByHalf.get()
 
@@ -406,7 +411,8 @@ try:
                 logRoutine(f"Renamed {file} to {fileName}")
                 # Backup operation
                 shutil.copy(
-                    f"{folderImgs}/{fileName}", f"{folderImgs}/backup/_backup_{fileName}"
+                    f"{folderImgs}/{fileName}",
+                    f"{folderImgs}/backup/_backup_{fileName}",
                 )
                 logRoutine(f"Copying {fileName} to backup folder")
 
@@ -484,14 +490,14 @@ try:
         convertionFunction()
         updateListbox()
 
-
     # =========== 🎭 Convertion Functions ===========
-
 
     def convertionFunction():
         """Convert all images to webp format."""
 
-        logRoutine(f"These are all of the files in our current working directory: {files}")
+        logRoutine(
+            f"These are all of the files in our current working directory: {files}"
+        )
 
         for file in files:
 
@@ -535,7 +541,14 @@ try:
             icon="info",
         )
 
-except (RuntimeError, TypeError, NameError, FileNotFoundError, OSError, tkCore.TclError) as eM:
+except (
+    RuntimeError,
+    TypeError,
+    NameError,
+    FileNotFoundError,
+    OSError,
+    tkCore.TclError,
+) as eM:
     logRoutine(f"ERROR: {eM}")
     messagebox.showerror(
         title="Error",
