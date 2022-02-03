@@ -50,12 +50,12 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-IMAGES_PATH = OUTPUT_PATH / Path("images")
+Images_PATH = OUTPUT_PATH / Path("images")
 
 
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
-    return IMAGES_PATH / Path(path)
+    return Images_PATH / Path(path)
 
 
 # 🧝🏻‍♀️ Tk Window Settings
@@ -68,7 +68,8 @@ rootWindow.iconbitmap(relative_to_assets("icon.ico"))
 
 # 💬 Variables
 
-files = os.listdir(IMAGES_PATH)
+files = os.listdir(Images_PATH)
+printableFiles = Images_PATH
 
 # 🌈 UI
 canvas = Canvas(
@@ -116,21 +117,36 @@ button_2.place(x=812.0, y=41.0, width=135.0, height=46.0)
 
 # 🔖 Load GUI files defs
 
-
 def loadFolderForImg():
     """Load the folder with images"""
 
+    global Images_PATH
+    global entry_DefPath
     global files
+    global printableFiles
+
     # open dialog box to select folder
-    printableFiles = askdirectory(initialdir=IMAGES_PATH)
-    files = os.listdir(printableFiles)
+    printableFiles = askdirectory(initialdir=Images_PATH)
+    # Regular expression to pick all words after the last "/".
+    # folderImgs = re.findall(r"[^\\\/]+$", printableFiles)
     entry_DefPath.set(str(printableFiles))
-    updateListbox()
+    print(f"indide loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}")
+    Images_PATH = Path(f"{printableFiles}")
+    files = os.listdir(Images_PATH)
+
+def pickGenUp():
+    """Load new folder after browser"""
+
+    global printableFiles
+    printableFiles = entry_DefPath.get()
+
+    print(f"indide pickGenUp: {printableFiles}")
+    return printableFiles
 
 
 # Entry to load files
 entry_DefPath = StringVar()
-entry_DefPath.set(str(IMAGES_PATH))
+entry_DefPath.set(str(Images_PATH))
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(567.5, 74.0, image=entry_image_1)
 entry_1 = Entry(
@@ -241,15 +257,22 @@ def cleaningRoutine():
 # =========== 📜 Check Function ===========
 
 folderImgs = entry_1.get()
-print(folderImgs)
 
 
 def updateListbox():
     """Update the list box with all files found in the folder"""
 
     global files
+    global folderImgs
 
-    updateFilesFound = os.listdir(IMAGES_PATH)
+    folderImgs = entry_1.get()
+    
+    # check if backup folder exists inside images folder
+    if not os.path.exists(f"{folderImgs}/backup"):
+        os.mkdir(f"{folderImgs}/backup")
+        print("Backup folder created.")
+
+    updateFilesFound = os.listdir(Images_PATH)
     files = updateFilesFound
 
     for file in files:
@@ -290,7 +313,7 @@ def updateListbox():
                     f"{folderImgs}/{file}",
                     f"{folderImgs}/Optimized {OscarfileName}.webp",
                 )
-            
+
             list_items.delete(0, END)
             list_items.insert(END, OscarfileName)
 
@@ -329,8 +352,7 @@ def optimizationFunction():
             print(f"Renamed {file} to {fileName}")
             # Backup operation
             shutil.copy(
-                f"{folderImgs}/{fileName}",
-                f"{folderImgs}/backup/_backup_{fileName}"
+                f"{folderImgs}/{fileName}", f"{folderImgs}/backup/_backup_{fileName}"
             )
             print(f"Copying {fileName} to backup folder")
 
@@ -375,9 +397,7 @@ def optimizationFunction():
 
             # If user don't want to reduce image resolution by half.
             else:
-                print(
-                    f"Image: {fileName}, is not larger enough to reduce resolution."
-                )
+                print(f"Image: {fileName}, is not larger enough to reduce resolution.")
 
                 print(f"Performing standard optimization on {fileName}")
                 if fileName.endswith(".png"):
