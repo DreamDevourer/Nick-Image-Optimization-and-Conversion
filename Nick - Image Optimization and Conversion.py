@@ -106,20 +106,20 @@ def logRoutine(log: str):
         return print(f"DEBUG LOG: {log}")
 
 
-# 🧝🏻‍♀️ Tk Window Settings
-rootWindow = Tk()
-rootWindow.resizable(False, False)
-rootWindow.geometry("980x580")
-rootWindow.configure(bg="#FFFFFF")
-rootWindow.title("Nick - Image Optimization and Conversion")
-rootWindow.iconbitmap(relative_to_assets("icon.ico"))
-
-# 💬 Variables
-
-files = os.listdir(Images_PATH)
-printableFiles = Images_PATH
-
 try:
+
+    # 🧝🏻‍♀️ Tk Window Settings
+    rootWindow = Tk()
+    rootWindow.resizable(False, False)
+    rootWindow.geometry("980x580")
+    rootWindow.configure(bg="#FFFFFF")
+    rootWindow.title("Nick - Image Optimization and Conversion")
+    rootWindow.iconbitmap(relative_to_assets("icon.ico"))
+
+    # 💬 Variables
+
+    files = os.listdir(Images_PATH)
+    printableFiles = Images_PATH
 
     # 🌈 UI
     canvas = Canvas(
