@@ -101,10 +101,9 @@ def logRoutine(log: str):
     # Append the log to the file.
     with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
         logFile.write(f"{currentTime} - {log}\n")
-        print(f"DEBUG LOG: {log}")
 
     if debugMode == True:
-        return print(log)
+        return print(f"DEBUG LOG: {log}")
 
 
 # 🧝🏻‍♀️ Tk Window Settings
