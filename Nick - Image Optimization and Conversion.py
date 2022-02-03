@@ -42,7 +42,7 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
-currentVersion = "v1.0.4 - Dev"
+currentVersion = "v1.0.5 - Release"
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
