@@ -218,7 +218,7 @@ try:
         disabledforeground="#000000",
         textvariable=entry_DefPath,
         highlightthickness=0,
-        state='disabled'
+        state="disabled",
     )
     entry_1.place(x=364.0, y=41.0, width=407.0, height=44.0)
 
@@ -316,6 +316,9 @@ try:
         """Refresh the list quicker."""
         global files
 
+        files = None
+        files = os.listdir(Images_PATH)
+
         time.sleep(0.5)
         list_items.delete(0, END)
 
@@ -331,10 +334,11 @@ try:
             if file.endswith(".webp") and "Optimized" not in file:
                 list_items.insert(END, file)
 
-    def listRefreshCaller(): 
+    def listRefreshCaller():
         """Refresh the listbox in X seconds."""
         logRoutine("Refreshing list...")
         quickUpdateList()
+
     schedule.every(5).seconds.do(listRefreshCaller)
 
     def updateListbox():
@@ -559,10 +563,12 @@ try:
             icon="info",
         )
         quickUpdateList()
-    
-    while True:
+
+    def schedulerController():
+        """Function to execute tasks in X ms."""
         schedule.run_pending()
-        time.sleep(1)
+        quickUpdateList()
+        rootWindow.after(2000, schedulerController)
 
 except (
     RuntimeError,
@@ -587,5 +593,5 @@ except:
     logRoutine("FATAL ERROR: Unknown error!")
 
 if __name__ == "__main__":
-    quickUpdateList()
+    rootWindow.after(500, schedulerController)
     rootWindow.mainloop()
