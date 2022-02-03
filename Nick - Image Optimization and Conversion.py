@@ -6,8 +6,9 @@ import pathlib
 import shutil
 import subprocess
 import time
-import traceback
+import schedule
 import tkinter as tkCore
+from multiprocessing import Process
 from pathlib import Path
 from PIL import Image
 from pathlib import Path
@@ -43,7 +44,7 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
-currentVersion = "v1.0.2 - Release"
+currentVersion = "v1.0.4 - Dev"
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -120,6 +121,7 @@ try:
 
     files = os.listdir(Images_PATH)
     printableFiles = Images_PATH
+    scheduleRefresher = True
 
     # 🌈 UI
     canvas = Canvas(
@@ -212,8 +214,11 @@ try:
         bd=0,
         bg="#FFFFFF",
         fg="#000000",
+        disabledbackground="#FFFFFF",
+        disabledforeground="#000000",
         textvariable=entry_DefPath,
         highlightthickness=0,
+        state='disabled'
     )
     entry_1.place(x=364.0, y=41.0, width=407.0, height=44.0)
 
@@ -240,18 +245,6 @@ try:
         border=0,
     )
     list_items.place(relx=0.5, rely=0.5, anchor="center")
-
-    for file in files:
-        if (
-            file.endswith(".png")
-            or file.endswith(".jpg")
-            or file.endswith(".jpeg")
-            or file.endswith(".gif")
-        ):
-            list_items.insert(END, file)
-
-        if file.endswith(".webp") and "Optimized" not in file:
-            list_items.insert(END, file)
 
     canvas.create_text(
         253.0,
@@ -320,7 +313,12 @@ try:
     folderImgs = entry_1.get()
 
     def quickUpdateList():
+        """Refresh the list quicker."""
         global files
+
+        time.sleep(0.5)
+        list_items.delete(0, END)
+
         for file in files:
             if (
                 file.endswith(".png")
@@ -332,6 +330,12 @@ try:
 
             if file.endswith(".webp") and "Optimized" not in file:
                 list_items.insert(END, file)
+
+    def listRefreshCaller(): 
+        """Refresh the listbox in X seconds."""
+        logRoutine("Refreshing list...")
+        quickUpdateList()
+    schedule.every(5).seconds.do(listRefreshCaller)
 
     def updateListbox():
         """Update the list box with all files found in the folder"""
@@ -349,6 +353,7 @@ try:
         updateFilesFound = os.listdir(Images_PATH)
         files = updateFilesFound
 
+        list_items.delete(0, END)
         for file in files:
 
             # regular expression to replace spaces to underlines and remove any digits.
@@ -365,7 +370,6 @@ try:
                     os.path.join(folderImgs, file),
                     os.path.join(folderImgs, fileName),
                 )
-                list_items.delete(0, END)
                 list_items.insert(END, fileName)
                 logRoutine(f"Found valid images in {folderImgs} with {file}.")
 
@@ -388,8 +392,7 @@ try:
                         f"{folderImgs}/Optimized {OscarfileName}.webp",
                     )
 
-                list_items.delete(0, END)
-                list_items.insert(END, OscarfileName)
+                quickUpdateList()
 
     # =========== 🧬 Optimization Functions ===========
 
@@ -556,6 +559,10 @@ try:
             icon="info",
         )
         quickUpdateList()
+    
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 except (
     RuntimeError,
@@ -564,6 +571,7 @@ except (
     FileNotFoundError,
     OSError,
     tkCore.TclError,
+    AttributeError,
 ) as eM:
     logRoutine(f"ERROR: {eM}")
     messagebox.showerror(
@@ -578,6 +586,6 @@ except Exception as eFatal:
 except:
     logRoutine("FATAL ERROR: Unknown error!")
 
-
 if __name__ == "__main__":
+    quickUpdateList()
     rootWindow.mainloop()
