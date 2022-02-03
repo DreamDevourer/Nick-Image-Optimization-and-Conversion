@@ -6,9 +6,7 @@ import pathlib
 import shutil
 import subprocess
 import time
-import schedule
 import tkinter as tkCore
-from multiprocessing import Process
 from pathlib import Path
 from PIL import Image
 from pathlib import Path
@@ -121,7 +119,6 @@ try:
 
     files = os.listdir(Images_PATH)
     printableFiles = Images_PATH
-    scheduleRefresher = True
 
     # 🌈 UI
     canvas = Canvas(
@@ -334,12 +331,10 @@ try:
             if file.endswith(".webp") and "Optimized" not in file:
                 list_items.insert(END, file)
 
-    def listRefreshCaller():
-        """Refresh the listbox in X seconds."""
-        logRoutine("Refreshing list...")
+    def schedulerController():
+        """Function to execute tasks in X ms."""
         quickUpdateList()
-
-    schedule.every(5).seconds.do(listRefreshCaller)
+        rootWindow.after(2000, schedulerController)
 
     def updateListbox():
         """Update the list box with all files found in the folder"""
@@ -563,12 +558,6 @@ try:
             icon="info",
         )
         quickUpdateList()
-
-    def schedulerController():
-        """Function to execute tasks in X ms."""
-        schedule.run_pending()
-        quickUpdateList()
-        rootWindow.after(2000, schedulerController)
 
 except (
     RuntimeError,
