@@ -6,7 +6,6 @@ import pathlib
 import shutil
 import subprocess
 import time
-import logs.current as logVerChecker
 from pathlib import Path
 from PIL import Image
 from pathlib import Path
@@ -71,7 +70,7 @@ def logRoutine(log: str):
 
     debugMode = True
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
-    logHeader = f""" I.O.C - {currentVersion}
+    logHeader = f"""{currentVersion}
     ===================================================
     LOG FILE MADE FOR DEBUG PURPOSES
     ===================================================
@@ -85,12 +84,13 @@ def logRoutine(log: str):
         with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
             logFile.write(logHeader)
 
-    if currentVersion != logVerChecker.loggedVer:
-        # Delete everything inside the file and append logVerChecker.loggedVer to the file.
-        with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
-            logFile.write(logVerChecker.loggedVer)
-        
-        logVerChecker.loggedVer = currentVersion
+    # if the first line of ioc.log is different from currentVersion, delete everything inside the file and append logVerChecker.loggedVer to the file.
+    with open(f"{relative_to_logs('ioc.log')}") as checkVer:
+        firstlineVer = checkVer.readline().rstrip()
+        if firstlineVer != currentVersion:
+            # Delete everything inside the file and append logHeader.
+            with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
+                logFile.write(logHeader)
 
     # if the file exceeds 1000 lines, delete everything and append logHeader to the file.
     with open(f"{relative_to_logs('ioc.log')}", "r") as logFile:
