@@ -84,7 +84,7 @@ def logRoutine(log: str):
         with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
             logFile.write(logHeader)
 
-    # if the first line of ioc.log is different from currentVersion, delete everything inside the file and append logVerChecker.loggedVer to the file.
+    # if the first line of ioc.log is different from currentVersion
     with open(f"{relative_to_logs('ioc.log')}") as checkVer:
         firstlineVer = checkVer.readline().rstrip()
         if firstlineVer != currentVersion:

@@ -22,6 +22,8 @@
 <!--- If you're not sure which open license to use see https://choosealicense.com/--->
 
 Tkinter Designer is licensed under the GNU General Public License v3.0 License.  
+Mulish font is licensed under the SIL Open Font License, Version 1.1.
+Designed in Figma by me :)
 
 Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
 
