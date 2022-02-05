@@ -7,7 +7,6 @@ import shutil
 import subprocess
 import time
 import tkinter as tkCore
-from pathlib import Path
 from PIL import Image
 from pathlib import Path
 from tkinter.filedialog import askdirectory
@@ -42,7 +41,7 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
-currentVersion = "v1.0.5 - Release"
+currentVersion = "v1.0.7 - Dev"
 pid = os.getpid()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
@@ -77,12 +76,13 @@ def relative_to_logs(path: str) -> Path:
     return LOGS_PATH / Path(path)
 
 
-def logRoutine(log: str, timeNeeded: bool=True):
+def logRoutine(log: str, timeNeeded: bool = True):
     """Write strings to the log file and if debug is enabled, print it to console."""
 
     if timeNeeded is None:
         timeNeeded = True
 
+    logRoutineSwitch = False
     debugMode = False
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
     logHeader = f"""{currentVersion}
@@ -103,9 +103,15 @@ def logRoutine(log: str, timeNeeded: bool=True):
     with open(f"{relative_to_logs('ioc.log')}") as checkVer:
         firstlineVer = checkVer.readline().rstrip()
         if firstlineVer != currentVersion:
-            # Delete everything inside the file and append logHeader.
-            with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
-                logFile.write(logHeader)
+            if firstlineVer == "" or firstlineVer == " ":
+                with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
+                    logFile.write(logHeader)
+                    logFile.write("\n\n[NOTICE] Log file has been deleted or cleaned.\n")
+            else:
+                # Delete everything inside the file and append logHeader.
+                with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
+                    logFile.write(logHeader)
+                    logFile.write(f"\n\n[NOTICE] IOC HAS BEEN UPDATED TO {currentVersion}!\n")
 
     # if the file exceeds 1000 lines, delete everything and append logHeader to the file.
     with open(f"{relative_to_logs('ioc.log')}", "r") as logFile:
@@ -113,21 +119,22 @@ def logRoutine(log: str, timeNeeded: bool=True):
             with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
                 logFile.write(logHeader)
 
-    # Append the log to the file.
-
-    if timeNeeded == True:
-        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-            logFile.write(f"{currentTime} - {log}\n")
-    else:
-        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-            logFile.write(f"{log}\n")
+    if logRoutineSwitch == True:
+        # Append the log to the file.
+        if timeNeeded == True:
+            with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+                logFile.write(f"{currentTime} - {log}\n")
+        else:
+            with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+                logFile.write(f"{log}\n")
 
     if debugMode == True:
         return print(f"DEBUG LOG: {log}")
 
 
 logRoutine(
-    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n", False
+    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n",
+    False,
 )
 
 try:
