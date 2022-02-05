@@ -73,10 +73,10 @@ def logRoutine(log: str):
     debugMode = False
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
     logHeader = f"""{currentVersion}
-    ===================================================
-    LOG FILE MADE FOR DEBUG PURPOSES
-    ===================================================\n
-    """
+===================================================
+LOG FILE MADE FOR DEBUG PURPOSES
+===================================================\n
+"""
 
     # Check if "ioc.log" exists, if not create this file.
     if not os.path.exists(relative_to_logs("ioc.log")):
