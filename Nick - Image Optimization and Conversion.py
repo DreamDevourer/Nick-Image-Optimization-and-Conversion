@@ -52,11 +52,13 @@ LOGS_PATH = OUTPUT_PATH / Path("./logs")
 
 def relative_to_assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
+    logRoutine("Assets folder have been accessed.")
     return ASSETS_PATH / Path(path)
 
 
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
+    logRoutine("Images folder path have been accessed.")
     return Images_PATH / Path(path)
 
 
@@ -68,7 +70,7 @@ def relative_to_logs(path: str) -> Path:
 def logRoutine(log: str):
     """Write strings to the log file and if debug is enabled, print it to console."""
 
-    debugMode = True
+    debugMode = False
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
     logHeader = f"""{currentVersion}
     ===================================================
@@ -291,6 +293,8 @@ try:
 
     def cleaningRoutine():
         """Removes any legacy image"""
+
+        logRoutine("Beginning cleaning routine")
 
         for file in files:
             fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
@@ -557,6 +561,7 @@ try:
             message="All files have been optimized and converted to WebP!",
             icon="info",
         )
+        logRoutine("Images optimized! Starting to update list.")
         quickUpdateList()
 
 except (
@@ -582,5 +587,6 @@ except:
     logRoutine("FATAL ERROR: Unknown error!")
 
 if __name__ == "__main__":
+    logRoutine("IOC has started!")
     rootWindow.after(500, schedulerController)
     rootWindow.mainloop()
