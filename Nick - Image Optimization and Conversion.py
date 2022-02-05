@@ -43,6 +43,7 @@ SUMMARY:
 # ✍️ Initial Setup to load assets
 
 pid = os.getpid()
+logRoutineController = nLog.logRoutineController(False, False)
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")

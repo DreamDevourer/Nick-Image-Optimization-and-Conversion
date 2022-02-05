@@ -18,9 +18,18 @@ def relative_to_logs(path: str) -> Path:
     """Return a path relative to the logs folder."""
     return LOGS_PATH / Path(path)
 
+logRoutineSwitch = True
+debugMode = True
 
 class nickLogger:
     """Logger class to be imported as a simple object"""
+
+    def logRoutineController(debugModeC: bool = True, logRoutineC: bool = True):
+        """Enable/Disable the logRoutine function."""
+        global logRoutineSwitch
+        global debugMode
+        logRoutineSwitch = logRoutineC
+        debugMode = debugModeC
 
     def logRoutine(log: str, timeNeeded: bool = True):
         """Write strings to the log file and if debug is enabled, print it to console."""
@@ -28,8 +37,6 @@ class nickLogger:
         if timeNeeded is None:
             timeNeeded = True
 
-        logRoutineSwitch = True
-        debugMode = True
         currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
         logHeader = f"""{currentVersion}
 ===================================================
