@@ -43,6 +43,7 @@ SUMMARY:
 # ✍️ Initial Setup to load assets
 
 currentVersion = "v1.0.5 - Release"
+pid = os.getpid()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -50,15 +51,22 @@ Images_PATH = OUTPUT_PATH / Path("./images")
 LOGS_PATH = OUTPUT_PATH / Path("./logs")
 
 
+def get_timestamp():
+    """Return a unix timestamp."""
+    return time.time()
+
+
 def relative_to_assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
-    logRoutine("Assets folder have been accessed.")
+    logRoutine(
+        f"[WARNING] Assets folder have been accessed.\n[OK] {path} has been loaded."
+    )
     return ASSETS_PATH / Path(path)
 
 
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
-    logRoutine("Images folder path have been accessed.")
+    logRoutine(f"[WARNING] Images folder path have been accessed.\n[OK] {path} has been loaded.")
     return Images_PATH / Path(path)
 
 
@@ -74,7 +82,8 @@ def logRoutine(log: str):
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
     logHeader = f"""{currentVersion}
 ===================================================
-LOG FILE MADE FOR DEBUG PURPOSES
+          LOG FILE MADE FOR DEBUG PURPOSES
+      made by Nicolas Mendes - September 2021
 ===================================================\n
 """
 
@@ -106,6 +115,10 @@ LOG FILE MADE FOR DEBUG PURPOSES
     if debugMode == True:
         return print(f"DEBUG LOG: {log}")
 
+
+logRoutine(
+    f"[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}"
+)
 
 try:
 
@@ -351,7 +364,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{folderImgs}/backup"):
             os.mkdir(f"{folderImgs}/backup")
-            logRoutine("Backup folder created.")
+            logRoutine("[OK] Backup folder created.")
 
         updateFilesFound = os.listdir(Images_PATH)
         files = updateFilesFound
@@ -374,7 +387,7 @@ try:
                     os.path.join(folderImgs, fileName),
                 )
                 list_items.insert(END, fileName)
-                logRoutine(f"Found valid images in {folderImgs} with {file}.")
+                logRoutine(f"[OK] Found valid images in {folderImgs} with {file}.")
 
             if file.endswith(".webp") and "Optimized" not in file:
                 NovemberfileName = file.replace(".webp", "")
@@ -414,7 +427,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{folderImgs}/backup"):
             os.mkdir(f"{folderImgs}/backup")
-            logRoutine("Backup folder created.")
+            logRoutine("[OK] Backup folder created.")
 
         updateListbox()
 
@@ -429,7 +442,7 @@ try:
                 or file.endswith(".gif")
             ):
 
-                logRoutine(f"Renamed {file} to {fileName}")
+                logRoutine(f"[OK] Renamed {file} to {fileName}")
                 # Backup operation
                 shutil.copy(
                     f"{folderImgs}/{fileName}",
@@ -457,7 +470,7 @@ try:
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
                     logRoutine(f"Reducing image resolution by half of {fileName}")
-                    logRoutine(f"Optimized {fileName}")
+                    logRoutine(f"[OK] Optimized {fileName}")
 
                     if file.endswith(".png"):
                         imgOptimize.save(
@@ -501,7 +514,7 @@ try:
                             quality=80,
                         )
 
-                logRoutine(f"{fileName} optimized!")
+                logRoutine(f"[OK] {fileName} optimized!")
 
             else:
                 logRoutine(
@@ -548,7 +561,7 @@ try:
                     "WEBP",
                     quality=80,
                 )
-                logRoutine(f"{fileName} converted to WebP")
+                logRoutine(f"[OK] {fileName} converted to WebP")
 
             else:
                 logRoutine(f"{fileName} is not a eligible, skipping...")
@@ -561,7 +574,7 @@ try:
             message="All files have been optimized and converted to WebP!",
             icon="info",
         )
-        logRoutine("Images optimized! Starting to update list.")
+        logRoutine("[OK] Images optimized! Starting to update list.")
         quickUpdateList()
 
 except (
@@ -573,7 +586,7 @@ except (
     tkCore.TclError,
     AttributeError,
 ) as eM:
-    logRoutine(f"ERROR: {eM}")
+    logRoutine(f"[X] ERROR: {eM}")
     messagebox.showerror(
         title="Error",
         message="Check the log for details.",
@@ -581,12 +594,12 @@ except (
     )
 
 except Exception as eFatal:
-    logRoutine(f"FATAL ERROR: {eFatal}")
+    logRoutine(f"[X] FATAL ERROR: {eFatal}")
 
 except:
-    logRoutine("FATAL ERROR: Unknown error!")
+    logRoutine("[X] FATAL ERROR: Unknown error!")
 
 if __name__ == "__main__":
-    logRoutine("IOC has started!")
+    logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========")
     rootWindow.after(500, schedulerController)
     rootWindow.mainloop()
