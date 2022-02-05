@@ -59,14 +59,16 @@ def get_timestamp():
 def relative_to_assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
     logRoutine(
-        f"[WARNING] Assets folder have been accessed.\n[OK] {path} has been loaded."
+        f"[WARNING] Assets folder have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
     )
     return ASSETS_PATH / Path(path)
 
 
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
-    logRoutine(f"[WARNING] Images folder path have been accessed.\n[OK] {path} has been loaded.")
+    logRoutine(
+        f"[WARNING] Images folder path have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
+    )
     return Images_PATH / Path(path)
 
 
@@ -117,7 +119,7 @@ def logRoutine(log: str):
 
 
 logRoutine(
-    f"[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}"
+    f"[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n*****************************************************************************************************************"
 )
 
 try:
