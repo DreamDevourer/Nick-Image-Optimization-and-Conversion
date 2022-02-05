@@ -9,6 +9,7 @@ import time
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
+from logger import nickLogger as nLog
 from tkinter.filedialog import askdirectory
 from tkinter import (
     Tk,
@@ -41,13 +42,11 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
-currentVersion = "v1.0.7 - Dev"
 pid = os.getpid()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 Images_PATH = OUTPUT_PATH / Path("./images")
-LOGS_PATH = OUTPUT_PATH / Path("./logs")
 
 
 def get_timestamp():
@@ -57,7 +56,7 @@ def get_timestamp():
 
 def relative_to_assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
-    logRoutine(
+    nLog.logRoutine(
         f"[WARNING] Assets folder have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
     )
     return ASSETS_PATH / Path(path)
@@ -65,74 +64,13 @@ def relative_to_assets(path: str) -> Path:
 
 def relative_to_images(path: str) -> Path:
     """Return a path relative to the images folder."""
-    logRoutine(
+    nLog.logRoutine(
         f"[WARNING] Images folder path have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
     )
     return Images_PATH / Path(path)
 
 
-def relative_to_logs(path: str) -> Path:
-    """Return a path relative to the logs folder."""
-    return LOGS_PATH / Path(path)
-
-
-def logRoutine(log: str, timeNeeded: bool = True):
-    """Write strings to the log file and if debug is enabled, print it to console."""
-
-    if timeNeeded is None:
-        timeNeeded = True
-
-    logRoutineSwitch = False
-    debugMode = False
-    currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
-    logHeader = f"""{currentVersion}
-===================================================
-          LOG FILE MADE FOR DEBUG PURPOSES
-      made by Nicolas Mendes - September 2021
-===================================================\n
-"""
-
-    # Check if "ioc.log" exists, if not create this file.
-    if not os.path.exists(relative_to_logs("ioc.log")):
-        open(f"{relative_to_logs('ioc.log')}", "w+")
-        # append logHeader to the file.
-        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-            logFile.write(logHeader)
-
-    # if the first line of ioc.log is different from currentVersion
-    with open(f"{relative_to_logs('ioc.log')}") as checkVer:
-        firstlineVer = checkVer.readline().rstrip()
-        if firstlineVer != currentVersion:
-            if firstlineVer == "" or firstlineVer == " ":
-                with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
-                    logFile.write(logHeader)
-                    logFile.write("\n\n[NOTICE] Log file has been deleted or cleaned.\n")
-            else:
-                # Delete everything inside the file and append logHeader.
-                with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
-                    logFile.write(logHeader)
-                    logFile.write(f"\n\n[NOTICE] IOC HAS BEEN UPDATED TO {currentVersion}!\n")
-
-    # if the file exceeds 1000 lines, delete everything and append logHeader to the file.
-    with open(f"{relative_to_logs('ioc.log')}", "r") as logFile:
-        if len(logFile.readlines()) > 1000:
-            with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
-                logFile.write(logHeader)
-
-    if logRoutineSwitch == True:
-        # Append the log to the file.
-        if timeNeeded == True:
-            with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-                logFile.write(f"{currentTime} - {log}\n")
-        else:
-            with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-                logFile.write(f"{log}\n")
-
-    if debugMode == True:
-        return print(f"DEBUG LOG: {log}")
-
-
-logRoutine(
+nLog.logRoutine(
     f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n",
     False,
 )
@@ -218,7 +156,7 @@ try:
 
         # Regular expression to pick all words after the last "/".
         # folderImgs = re.findall(r"[^\\\/]+$", printableFiles)
-        logRoutine(
+        nLog.logRoutine(
             f"inside loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}"
         )
         Images_PATH = Path(f"{printableFiles}")
@@ -231,7 +169,7 @@ try:
         global printableFiles
         printableFiles = entry_DefPath.get()
 
-        logRoutine(f"inside pickGenUp: {printableFiles}")
+        nLog.logRoutine(f"inside pickGenUp: {printableFiles}")
         return printableFiles
 
     # Entry to load files
@@ -324,7 +262,7 @@ try:
     def cleaningRoutine():
         """Removes any legacy image"""
 
-        logRoutine("Beginning cleaning routine")
+        nLog.logRoutine("Beginning cleaning routine")
 
         for file in files:
             fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
@@ -336,7 +274,7 @@ try:
                 or fileName.endswith(".gif")
             ):
                 # Delete original file
-                logRoutine(f"Deleting {fileName}")
+                nLog.logRoutine(f"Deleting {fileName}")
                 os.remove(f"{folderImgs}/{fileName}")
 
     # =========== 📜 Check Function ===========
@@ -381,7 +319,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{folderImgs}/backup"):
             os.mkdir(f"{folderImgs}/backup")
-            logRoutine("[OK] Backup folder created.")
+            nLog.logRoutine("[OK] Backup folder created.")
 
         updateFilesFound = os.listdir(Images_PATH)
         files = updateFilesFound
@@ -404,7 +342,7 @@ try:
                     os.path.join(folderImgs, fileName),
                 )
                 list_items.insert(END, fileName)
-                logRoutine(f"[OK] Found valid images in {folderImgs} with {file}.")
+                nLog.logRoutine(f"[OK] Found valid images in {folderImgs} with {file}.")
 
             if file.endswith(".webp") and "Optimized" not in file:
                 NovemberfileName = file.replace(".webp", "")
@@ -412,7 +350,7 @@ try:
                 OscarfileName = re.sub(r"\_[_][_]|\_|\_[_]", " ", NovemberfileName)
                 OscarfileName = re.sub(r"^\s+|\s+$", "", OscarfileName)
 
-                logRoutine(f"Renaming {file} to {OscarfileName}")
+                nLog.logRoutine(f"Renaming {file} to {OscarfileName}")
 
                 if OscarfileName == " " or OscarfileName == "":
                     os.rename(
@@ -435,7 +373,7 @@ try:
         global reduceByHalf
         global files
 
-        logRoutine(
+        nLog.logRoutine(
             f"These are all of the files in our current working directory: {files}"
         )
         confirmDownRes = IntVar()
@@ -444,7 +382,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{folderImgs}/backup"):
             os.mkdir(f"{folderImgs}/backup")
-            logRoutine("[OK] Backup folder created.")
+            nLog.logRoutine("[OK] Backup folder created.")
 
         updateListbox()
 
@@ -459,20 +397,20 @@ try:
                 or file.endswith(".gif")
             ):
 
-                logRoutine(f"[OK] Renamed {file} to {fileName}")
+                nLog.logRoutine(f"[OK] Renamed {file} to {fileName}")
                 # Backup operation
                 shutil.copy(
                     f"{folderImgs}/{fileName}",
                     f"{folderImgs}/backup/_backup_{fileName}",
                 )
-                logRoutine(f"Copying {fileName} to backup folder")
+                nLog.logRoutine(f"Copying {fileName} to backup folder")
 
-                logRoutine(f"Optimizing {fileName}")
+                nLog.logRoutine(f"Optimizing {fileName}")
 
                 imgOptimize = Image.open(relative_to_images(str(fileName)))
                 imgWidth, imgHeight = imgOptimize.size
-                logRoutine(f"Image size: {imgWidth} x {imgHeight}")
-                logRoutine(f"The state of resolution option is: {confirmDownRes}")
+                nLog.logRoutine(f"Image size: {imgWidth} x {imgHeight}")
+                nLog.logRoutine(f"The state of resolution option is: {confirmDownRes}")
 
                 list_items.delete(0, END)
                 list_items.insert(END, fileName)
@@ -486,8 +424,8 @@ try:
                     imgOptimize = imgOptimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
-                    logRoutine(f"Reducing image resolution by half of {fileName}")
-                    logRoutine(f"[OK] Optimized {fileName}")
+                    nLog.logRoutine(f"Reducing image resolution by half of {fileName}")
+                    nLog.logRoutine(f"[OK] Optimized {fileName}")
 
                     if file.endswith(".png"):
                         imgOptimize.save(
@@ -508,11 +446,11 @@ try:
 
                 # If user don't want to reduce image resolution by half.
                 else:
-                    logRoutine(
+                    nLog.logRoutine(
                         f"Image: {fileName}, is not larger enough to reduce resolution."
                     )
 
-                    logRoutine(f"Performing standard optimization on {fileName}")
+                    nLog.logRoutine(f"Performing standard optimization on {fileName}")
                     if fileName.endswith(".png"):
                         imgOptimize.save(
                             str(relative_to_images(str(fileName))),
@@ -531,10 +469,10 @@ try:
                             quality=80,
                         )
 
-                logRoutine(f"[OK] {fileName} optimized!")
+                nLog.logRoutine(f"[OK] {fileName} optimized!")
 
             else:
-                logRoutine(
+                nLog.logRoutine(
                     f"No valid files found in {folderImgs} with {fileName}... Checking again."
                 )
 
@@ -546,7 +484,7 @@ try:
     def convertionFunction():
         """Convert all images to webp format."""
 
-        logRoutine(
+        nLog.logRoutine(
             f"These are all of the files in our current working directory: {files}"
         )
 
@@ -560,7 +498,7 @@ try:
                 or fileName.endswith(".jpeg")
                 or fileName.endswith(".gif")
             ):
-                logRoutine(f"Converting {fileName} to WebP")
+                nLog.logRoutine(f"Converting {fileName} to WebP")
                 loadImg = Image.open(relative_to_images(str(fileName)))
 
                 # remove ".png", ".jpg", ".jpeg", ".gif" from fileName
@@ -578,10 +516,10 @@ try:
                     "WEBP",
                     quality=80,
                 )
-                logRoutine(f"[OK] {fileName} converted to WebP")
+                nLog.logRoutine(f"[OK] {fileName} converted to WebP")
 
             else:
-                logRoutine(f"{fileName} is not a eligible, skipping...")
+                nLog.logRoutine(f"{fileName} is not a eligible, skipping...")
 
         # Show a message window with "Optimization and conversion completed!"
         cleaningRoutine()
@@ -591,7 +529,7 @@ try:
             message="All files have been optimized and converted to WebP!",
             icon="info",
         )
-        logRoutine("[OK] Images optimized! Starting to update list.")
+        nLog.logRoutine("[OK] Images optimized! Starting to update list.")
         quickUpdateList()
 
 except (
@@ -603,7 +541,7 @@ except (
     tkCore.TclError,
     AttributeError,
 ) as eM:
-    logRoutine(f"[X] ERROR: {eM}")
+    nLog.logRoutine(f"[X] ERROR: {eM}", False)
     messagebox.showerror(
         title="Error",
         message="Check the log for details.",
@@ -611,12 +549,12 @@ except (
     )
 
 except Exception as eFatal:
-    logRoutine(f"[X] FATAL ERROR: {eFatal}")
+    nLog.logRoutine(f"[X] FATAL ERROR: {eFatal}")
 
 except:
-    logRoutine("[X] FATAL ERROR: Unknown error!")
+    nLog.logRoutine("[X] FATAL ERROR: Unknown error!")
 
 if __name__ == "__main__":
-    logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
+    nLog.logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
     rootWindow.after(500, schedulerController)
     rootWindow.mainloop()
