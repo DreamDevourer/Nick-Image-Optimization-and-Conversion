@@ -1,4 +1,7 @@
-"""Logger module made for quick logging and troubleshooting Python programs."""
+"""Logger module made for quick logging and troubleshooting Python programs by Nicolas Mendes
+Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
+"""
+
 import pathlib
 import os
 import time
