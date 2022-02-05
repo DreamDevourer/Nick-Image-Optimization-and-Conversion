@@ -77,8 +77,11 @@ def relative_to_logs(path: str) -> Path:
     return LOGS_PATH / Path(path)
 
 
-def logRoutine(log: str):
+def logRoutine(log: str, timeNeeded: bool=True):
     """Write strings to the log file and if debug is enabled, print it to console."""
+
+    if timeNeeded is None:
+        timeNeeded = True
 
     debugMode = False
     currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
@@ -111,15 +114,20 @@ def logRoutine(log: str):
                 logFile.write(logHeader)
 
     # Append the log to the file.
-    with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-        logFile.write(f"{currentTime} - {log}\n")
+
+    if timeNeeded == True:
+        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+            logFile.write(f"{currentTime} - {log}\n")
+    else:
+        with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
+            logFile.write(f"{log}\n")
 
     if debugMode == True:
         return print(f"DEBUG LOG: {log}")
 
 
 logRoutine(
-    f"[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n*****************************************************************************************************************"
+    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n", False
 )
 
 try:
@@ -602,6 +610,6 @@ except:
     logRoutine("[X] FATAL ERROR: Unknown error!")
 
 if __name__ == "__main__":
-    logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========")
+    logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
     rootWindow.after(500, schedulerController)
     rootWindow.mainloop()
