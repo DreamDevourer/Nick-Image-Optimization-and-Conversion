@@ -18,6 +18,7 @@ def relative_to_logs(path: str) -> Path:
     """Return a path relative to the logs folder."""
     return LOGS_PATH / Path(path)
 
+
 # check if logs folder exists, if not, create it.
 if not LOGS_PATH.exists():
     LOGS_PATH.mkdir()
@@ -25,18 +26,19 @@ if not LOGS_PATH.exists():
 logRoutineSwitch = True
 debugMode = True
 
+
 class nickLogger:
     """Logger class to be imported as a simple object"""
 
     def logRoutineController(debugModeC: bool = True, logRoutineC: bool = True):
-        """Enable/Disable the logRoutine function."""
+        """Enable/Disable the logRoutine function. Defaults: debugModeC = True, logRoutineC = True"""
         global logRoutineSwitch
         global debugMode
         logRoutineSwitch = logRoutineC
         debugMode = debugModeC
 
     def logRoutine(log: str, timeNeeded: bool = True):
-        """Write strings to the log file and if debug is enabled, print it to console."""
+        """Write strings to the log file and if debug is enabled, print it to console. ARGS: log, timeNeeded = True"""
 
         if timeNeeded is None:
             timeNeeded = True
