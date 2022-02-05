@@ -18,6 +18,10 @@ def relative_to_logs(path: str) -> Path:
     """Return a path relative to the logs folder."""
     return LOGS_PATH / Path(path)
 
+# check if logs folder exists, if not, create it.
+if not LOGS_PATH.exists():
+    LOGS_PATH.mkdir()
+
 logRoutineSwitch = True
 debugMode = True
 
