@@ -1,4 +1,4 @@
-"""Logger module made for quick logging and troubleshooting Python programs by Nicolas Mendes
+r"""Logger module made for quick logging and troubleshooting Python programs by Nicolas Mendes
 Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
