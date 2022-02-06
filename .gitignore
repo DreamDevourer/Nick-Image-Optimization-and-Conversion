@@ -10,6 +10,11 @@ Bin/
 /ioc.log
 *.log
 
+_pycache_
+*_pycache_*
+*cpython
+*pyc
+
 nohup.out
 
 # Files that might appear in the root of a volume
@@ -69,3 +74,4 @@ $RECYCLE.BIN/
 .nfs*
 *.out
 logs/ioc.log
+__pycache__/logger.cpython-39.pyc
