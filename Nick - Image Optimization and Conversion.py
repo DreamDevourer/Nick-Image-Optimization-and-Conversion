@@ -3,7 +3,7 @@
 # Try following pep8 (https://pep8.org/) and try using "black" as the default formatter.
 # In this case, use Snake case with the first letter of each word capitalized.
 import re
-import os 
+import os
 import time
 import pathlib
 import subprocess
@@ -250,8 +250,8 @@ try:
 
     # ⚙️ Logic and Defs
 
-    """ 
-    Optimization and Convertion Scripts forked from my Python Fundamentals Study GitHub repository. 
+    """
+    Optimization and Convertion Scripts forked from my Python Fundamentals Study GitHub repository.
     Forked on September 23, 2021.
     https://github.com/DreamDevourer/Python-Fundamentals-Study
     """
@@ -339,7 +339,9 @@ try:
                     os.path.join(Folder_Imgs, File_Name),
                 )
                 list_items.insert(END, File_Name)
-                nLog.logRoutine(f"[OK] Found valid images in {Folder_Imgs} with {file}.")
+                nLog.logRoutine(
+                    f"[OK] Found valid images in {Folder_Imgs} with {file}."
+                )
 
             if file.endswith(".webp") and "Optimized" not in file:
                 November_File_Name = file.replace(".webp", "")
@@ -407,7 +409,9 @@ try:
                 Img_Optimize = Image.open(Relative_To_Images(str(File_Name)))
                 imgWidth, imgHeight = Img_Optimize.size
                 nLog.logRoutine(f"Image size: {imgWidth} x {imgHeight}")
-                nLog.logRoutine(f"The state of resolution option is: {Confirm_Down_Res}")
+                nLog.logRoutine(
+                    f"The state of resolution option is: {Confirm_Down_Res}"
+                )
 
                 list_items.delete(0, END)
                 list_items.insert(END, File_Name)
