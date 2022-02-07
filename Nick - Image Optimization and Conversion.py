@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # 🧶 Modules Imports
-# Try following pep8 (https://pep8.org/) and try using "black" as the default formatter.
-# In this case, use Snake case with the first letter of each word capitalized.
+# Try following pep8 (https://pep8.org/) and try using "black" 
+# as the default formatter.
+# In this case, use Snake case with the first letter of each word 
+# capitalized. Lowecase for imports and classes only.
 import re
 import os
 import time
