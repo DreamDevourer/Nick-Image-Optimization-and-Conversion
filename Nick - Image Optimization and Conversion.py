@@ -43,7 +43,7 @@ SUMMARY:
 =========== 📜 Check Function
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
-🙌 __Main__
+🙌 __main__
 
 """
 
@@ -557,7 +557,7 @@ except Exception as eFatal:
 except:
     nick_log.log_routine("[X] FATAL ERROR: Unknown error!")
 
-# 🙌 __Main__
+# 🙌 __main__
 if __name__ == "__main__":
     nick_log.log_routine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
     Root_Window.after(500, Scheduler_Controller)
