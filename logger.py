@@ -2,8 +2,23 @@ r"""Logger module made for quick logging and troubleshooting Python programs by 
 Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
+# 🧶 Modules Imports
 import pathlib, os, time, json
 from pathlib import Path
+
+""" Made by Nicolas Mendes - Feb 2022
+SUMMARY:
+
+🧶 Modules Imports
+✍️ Initial Setup to load assets
+🔖 Main class
+⚙️ Logic and Defs
+=========== ✍️ Module controller
+=========== 📖 Main log function
+
+"""
+
+# ✍️ Initial Setup to load assets
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 LOGS_PATH = OUTPUT_PATH / Path("./logs")
@@ -26,9 +41,14 @@ if not LOGS_PATH.exists():
 log_routine_switch = True
 debug_mode = True
 
+# 🔖 Main class
 
 class nick_logger:
     """Logger class to be imported as a simple object"""
+
+    # ⚙️ Logic and Defs
+
+    # ✍️ Module controller
 
     def log_routine_controller(debug_Mode_C: bool = True, log_routine_C: bool = True):
         """Enable/Disable the log_routine function. Defaults: debug_Mode_C = True, log_routine_C = True"""
@@ -37,6 +57,8 @@ class nick_logger:
         log_routine_switch = log_routine_C
         debug_mode = debug_Mode_C
 
+    # 📖 Main log function
+    
     def log_routine(log: str, time_needed: bool = True):
         """Write strings to the log file and if debug is enabled, print it to console. ARGS: log, time_needed = True"""
 
