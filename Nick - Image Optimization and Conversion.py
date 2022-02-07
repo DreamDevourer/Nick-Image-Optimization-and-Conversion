@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 # 🧶 Modules Imports
 # Try following pep8 (https://pep8.org/) and try using "black" as the default formatter.
-import re, os, PIL, time, pathlib, subprocess, shutil
+import re
+import os 
+import time
+import pathlib
+import subprocess
+import shutil
+import PIL
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
@@ -40,8 +46,8 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 
-pid = os.getpid()
-logRoutineController = nLog.logRoutineController(False)
+Pid = os.getpid()
+Log_Routine_Controller = nLog.logRoutineController(False)
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -70,28 +76,28 @@ def relative_to_images(path: str) -> Path:
 
 
 nLog.logRoutine(
-    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {pid} | UTS: {get_timestamp()}\n",
+    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {Pid} | UTS: {get_timestamp()}\n",
     False,
 )
 
 try:
 
     # 🧝🏻‍♀️ Tk Window Settings
-    rootWindow = Tk()
-    rootWindow.resizable(False, False)
-    rootWindow.geometry("980x580")
-    rootWindow.configure(bg="#FFFFFF")
-    rootWindow.title("Nick - Image Optimization and Conversion")
-    rootWindow.iconbitmap(relative_to_assets("icon.ico"))
+    Root_Window = Tk()
+    Root_Window.resizable(False, False)
+    Root_Window.geometry("980x580")
+    Root_Window.configure(bg="#FFFFFF")
+    Root_Window.title("Nick - Image Optimization and Conversion")
+    Root_Window.iconbitmap(relative_to_assets("icon.ico"))
 
     # 💬 Variables
 
     files = os.listdir(Images_PATH)
-    printableFiles = Images_PATH
+    Printable_Files = Images_PATH
 
     # 🌈 UI
     canvas = Canvas(
-        rootWindow,
+        Root_Window,
         bg="#FFFFFF",
         height=580,
         width=980,
@@ -128,48 +134,39 @@ try:
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: loadFolderForImg(),
+        command=lambda: Load_Folder_For_Img(),
         relief="flat",
     )
     button_2.place(x=812.0, y=41.0, width=135.0, height=46.0)
 
     # 🔖 Load GUI files defs
 
-    def loadFolderForImg():
+    def Load_Folder_For_Img():
         """Load the folder with images"""
 
         global Images_PATH
         global entry_DefPath
         global files
-        global printableFiles
+        global Printable_Files
 
         # open dialog box to select folder
-        printableFiles = askdirectory(initialdir=Images_PATH)
+        Printable_Files = askdirectory(initialdir=Images_PATH)
 
         # If the user cancel it will fallback to the default folder.
-        if printableFiles == "" or printableFiles == " ":
-            printableFiles = Images_PATH
+        if Printable_Files == "" or Printable_Files == " ":
+            Printable_Files = Images_PATH
             entry_DefPath.set(str(Images_PATH))
         else:
-            entry_DefPath.set(str(printableFiles))
+            entry_DefPath.set(str(Printable_Files))
 
         # Regular expression to pick all words after the last "/".
-        # folderImgs = re.findall(r"[^\\\/]+$", printableFiles)
+        # folderImgs = re.findall(r"[^\\\/]+$", Printable_Files)
         nLog.logRoutine(
-            f"inside loadFolderForImg: {printableFiles}, {entry_DefPath.get()} and {entry_1.get()}"
+            f"inside loadFolderForImg: {Printable_Files}, {entry_DefPath.get()} and {entry_1.get()}"
         )
-        Images_PATH = Path(f"{printableFiles}")
+        Images_PATH = Path(f"{Printable_Files}")
         files = os.listdir(Images_PATH)
-        quickUpdateList()
-
-    def pickGenUp():
-        """Load new folder after browser"""
-
-        global printableFiles
-        printableFiles = entry_DefPath.get()
-
-        nLog.logRoutine(f"inside pickGenUp: {printableFiles}")
-        return printableFiles
+        Quick_Update_List()
 
     # Entry to load files
     entry_DefPath = StringVar()
@@ -198,7 +195,7 @@ try:
         font=("Mulish Regular", 18 * -1),
     )
 
-    # Listbox to show files loaded rootWindow
+    # Listbox to show files loaded Root_Window
     list_items = Listbox(
         x=210.0,
         y=115.0,
@@ -258,7 +255,7 @@ try:
     https://github.com/DreamDevourer/Python-Fundamentals-Study
     """
 
-    def cleaningRoutine():
+    def Cleaning_Routine():
         """Removes any legacy image"""
 
         nLog.logRoutine("Beginning cleaning routine")
@@ -280,7 +277,7 @@ try:
 
     folderImgs = entry_1.get()
 
-    def quickUpdateList():
+    def Quick_Update_List():
         """Refresh the list quicker."""
         global files
 
@@ -302,12 +299,12 @@ try:
             if file.endswith(".webp") and "Optimized" not in file:
                 list_items.insert(END, file)
 
-    def schedulerController():
+    def Scheduler_Controller():
         """Function to execute tasks in X ms."""
-        quickUpdateList()
-        rootWindow.after(2000, schedulerController)
+        Quick_Update_List()
+        Root_Window.after(2000, Scheduler_Controller)
 
-    def updateListbox():
+    def Update_Listbox():
         """Update the list box with all files found in the folder"""
 
         global files
@@ -362,7 +359,7 @@ try:
                         f"{folderImgs}/Optimized {OscarfileName}.webp",
                     )
 
-                quickUpdateList()
+                Quick_Update_List()
 
     # =========== 🧬 Optimization Functions ===========
 
@@ -383,7 +380,7 @@ try:
             os.mkdir(f"{folderImgs}/backup")
             nLog.logRoutine("[OK] Backup folder created.")
 
-        updateListbox()
+        Update_Listbox()
 
         for file in files:
 
@@ -475,12 +472,12 @@ try:
                     f"No valid files found in {folderImgs} with {fileName}... Checking again."
                 )
 
-        convertionFunction()
-        updateListbox()
+        Convertion_Function()
+        Update_Listbox()
 
     # =========== 🎭 Convertion Functions ===========
 
-    def convertionFunction():
+    def Convertion_Function():
         """Convert all images to webp format."""
 
         nLog.logRoutine(
@@ -521,7 +518,7 @@ try:
                 nLog.logRoutine(f"{fileName} is not a eligible, skipping...")
 
         # Show a message window with "Optimization and conversion completed!"
-        cleaningRoutine()
+        Cleaning_Routine()
         subprocess.Popen(["open", "-R", folderImgs])
         messagebox.showinfo(
             title="Optimization and conversion completed! \n",
@@ -529,7 +526,7 @@ try:
             icon="info",
         )
         nLog.logRoutine("[OK] Images optimized! Starting to update list.")
-        quickUpdateList()
+        Quick_Update_List()
 
 except (
     RuntimeError,
@@ -556,5 +553,5 @@ except:
 # 🙌 __Main__
 if __name__ == "__main__":
     nLog.logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
-    rootWindow.after(500, schedulerController)
-    rootWindow.mainloop()
+    Root_Window.after(500, Scheduler_Controller)
+    Root_Window.mainloop()
