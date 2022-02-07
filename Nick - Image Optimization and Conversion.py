@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 🧶 Modules Imports
+# Try following pep8 (https://pep8.org/) and try using "black" as the default formatter.
 import re, os, PIL, time, pathlib, subprocess, shutil
 import tkinter as tkCore
 from PIL import Image
@@ -22,6 +24,7 @@ from tkinter import (
 """ Made by Nicolas Mendes - September 2021
 SUMMARY:
 
+🧶 Modules Imports
 ✍️ Initial Setup to load assets
 🧝🏻‍♀️ Tk Window Settings
 💬 Variables
@@ -31,6 +34,7 @@ SUMMARY:
 =========== 📜 Check Function
 =========== 🧬 Optimization Functions
 =========== 🎭 Convertion Functions
+🙌 __Main__
 
 """
 
@@ -549,6 +553,7 @@ except Exception as eFatal:
 except:
     nLog.logRoutine("[X] FATAL ERROR: Unknown error!")
 
+# 🙌 __Main__
 if __name__ == "__main__":
     nLog.logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
     rootWindow.after(500, schedulerController)
