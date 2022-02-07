@@ -12,7 +12,7 @@ import PIL
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
-from logger import nickLogger as nLog
+from logger import nick_logger as nick_log
 from tkinter.filedialog import askdirectory
 from tkinter import (
     Tk,
@@ -48,7 +48,7 @@ SUMMARY:
 # ✍️ Initial Setup to load assets
 
 Pid = os.getpid()
-Log_Routine_Controller = nLog.logRoutineController(False)
+Log_Routine_Controller = nick_log.log_routine_controller(False)
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -62,7 +62,7 @@ def Get_Timestamp():
 
 def Relative_To_Assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
-    nLog.logRoutine(
+    nick_log.log_routine(
         f"[WARNING] Assets folder have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
     )
     return ASSETS_PATH / Path(path)
@@ -70,13 +70,13 @@ def Relative_To_Assets(path: str) -> Path:
 
 def Relative_To_Images(path: str) -> Path:
     """Return a path relative to the images folder."""
-    nLog.logRoutine(
+    nick_log.log_routine(
         f"[WARNING] Images folder path have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
     )
     return Images_PATH / Path(path)
 
 
-nLog.logRoutine(
+nick_log.log_routine(
     f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {Pid} | UTS: {Get_Timestamp()}\n",
     False,
 )
@@ -162,7 +162,7 @@ try:
 
         # Regular expression to pick all words after the last "/".
         # Folder_Imgs = re.findall(r"[^\\\/]+$", Printable_Files)
-        nLog.logRoutine(
+        nick_log.log_routine(
             f"inside loadFolderForImg: {Printable_Files}, {entry_DefPath.get()} and {entry_1.get()}"
         )
         Images_PATH = Path(f"{Printable_Files}")
@@ -259,7 +259,7 @@ try:
     def Cleaning_Routine():
         """Removes any legacy image"""
 
-        nLog.logRoutine("Beginning cleaning routine")
+        nick_log.log_routine("Beginning cleaning routine")
 
         for file in files:
             File_Name = re.sub(r"\s+|\d|\(|\)", "_", file)
@@ -271,7 +271,7 @@ try:
                 or File_Name.endswith(".gif")
             ):
                 # Delete original file
-                nLog.logRoutine(f"Deleting {File_Name}")
+                nick_log.log_routine(f"Deleting {File_Name}")
                 os.remove(f"{Folder_Imgs}/{File_Name}")
 
     # =========== 📜 Check Function ===========
@@ -316,7 +316,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{Folder_Imgs}/backup"):
             os.mkdir(f"{Folder_Imgs}/backup")
-            nLog.logRoutine("[OK] Backup folder created.")
+            nick_log.log_routine("[OK] Backup folder created.")
 
         Update_Files_Found = os.listdir(Images_PATH)
         files = Update_Files_Found
@@ -339,7 +339,7 @@ try:
                     os.path.join(Folder_Imgs, File_Name),
                 )
                 list_items.insert(END, File_Name)
-                nLog.logRoutine(
+                nick_log.log_routine(
                     f"[OK] Found valid images in {Folder_Imgs} with {file}."
                 )
 
@@ -349,7 +349,7 @@ try:
                 Oscar_File_Name = re.sub(r"\_[_][_]|\_|\_[_]", " ", November_File_Name)
                 Oscar_File_Name = re.sub(r"^\s+|\s+$", "", Oscar_File_Name)
 
-                nLog.logRoutine(f"Renaming {file} to {Oscar_File_Name}")
+                nick_log.log_routine(f"Renaming {file} to {Oscar_File_Name}")
 
                 if Oscar_File_Name == " " or Oscar_File_Name == "":
                     os.rename(
@@ -372,7 +372,7 @@ try:
         global Reduce_By_Half
         global files
 
-        nLog.logRoutine(
+        nick_log.log_routine(
             f"These are all of the files in our current working directory: {files}"
         )
         Confirm_Down_Res = IntVar()
@@ -381,7 +381,7 @@ try:
         # check if backup folder exists inside images folder
         if not os.path.exists(f"{Folder_Imgs}/backup"):
             os.mkdir(f"{Folder_Imgs}/backup")
-            nLog.logRoutine("[OK] Backup folder created.")
+            nick_log.log_routine("[OK] Backup folder created.")
 
         Update_Listbox()
 
@@ -396,20 +396,20 @@ try:
                 or file.endswith(".gif")
             ):
 
-                nLog.logRoutine(f"[OK] Renamed {file} to {File_Name}")
+                nick_log.log_routine(f"[OK] Renamed {file} to {File_Name}")
                 # Backup operation
                 shutil.copy(
                     f"{Folder_Imgs}/{File_Name}",
                     f"{Folder_Imgs}/backup/_backup_{File_Name}",
                 )
-                nLog.logRoutine(f"Copying {File_Name} to backup folder")
+                nick_log.log_routine(f"Copying {File_Name} to backup folder")
 
-                nLog.logRoutine(f"Optimizing {File_Name}")
+                nick_log.log_routine(f"Optimizing {File_Name}")
 
                 Img_Optimize = Image.open(Relative_To_Images(str(File_Name)))
                 imgWidth, imgHeight = Img_Optimize.size
-                nLog.logRoutine(f"Image size: {imgWidth} x {imgHeight}")
-                nLog.logRoutine(
+                nick_log.log_routine(f"Image size: {imgWidth} x {imgHeight}")
+                nick_log.log_routine(
                     f"The state of resolution option is: {Confirm_Down_Res}"
                 )
 
@@ -425,8 +425,8 @@ try:
                     Img_Optimize = Img_Optimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
-                    nLog.logRoutine(f"Reducing image resolution by half of {File_Name}")
-                    nLog.logRoutine(f"[OK] Optimized {File_Name}")
+                    nick_log.log_routine(f"Reducing image resolution by half of {File_Name}")
+                    nick_log.log_routine(f"[OK] Optimized {File_Name}")
 
                     if file.endswith(".png"):
                         Img_Optimize.save(
@@ -447,11 +447,11 @@ try:
 
                 # If user don't want to reduce image resolution by half.
                 else:
-                    nLog.logRoutine(
+                    nick_log.log_routine(
                         f"Image: {File_Name}, is not larger enough to reduce resolution."
                     )
 
-                    nLog.logRoutine(f"Performing standard optimization on {File_Name}")
+                    nick_log.log_routine(f"Performing standard optimization on {File_Name}")
                     if File_Name.endswith(".png"):
                         Img_Optimize.save(
                             str(Relative_To_Images(str(File_Name))),
@@ -470,10 +470,10 @@ try:
                             quality=80,
                         )
 
-                nLog.logRoutine(f"[OK] {File_Name} optimized!")
+                nick_log.log_routine(f"[OK] {File_Name} optimized!")
 
             else:
-                nLog.logRoutine(
+                nick_log.log_routine(
                     f"No valid files found in {Folder_Imgs} with {File_Name}... Checking again."
                 )
 
@@ -485,7 +485,7 @@ try:
     def Convertion_Function():
         """Convert all images to webp format."""
 
-        nLog.logRoutine(
+        nick_log.log_routine(
             f"These are all of the files in our current working directory: {files}"
         )
 
@@ -499,7 +499,7 @@ try:
                 or File_Name.endswith(".jpeg")
                 or File_Name.endswith(".gif")
             ):
-                nLog.logRoutine(f"Converting {File_Name} to WebP")
+                nick_log.log_routine(f"Converting {File_Name} to WebP")
                 Load_Img = Image.open(Relative_To_Images(str(File_Name)))
 
                 # remove ".png", ".jpg", ".jpeg", ".gif" from File_Name
@@ -517,10 +517,10 @@ try:
                     "WEBP",
                     quality=80,
                 )
-                nLog.logRoutine(f"[OK] {File_Name} converted to WebP")
+                nick_log.log_routine(f"[OK] {File_Name} converted to WebP")
 
             else:
-                nLog.logRoutine(f"{File_Name} is not a eligible, skipping...")
+                nick_log.log_routine(f"{File_Name} is not a eligible, skipping...")
 
         # Show a message window with "Optimization and conversion completed!"
         Cleaning_Routine()
@@ -530,7 +530,7 @@ try:
             message="All files have been optimized and converted to WebP!",
             icon="info",
         )
-        nLog.logRoutine("[OK] Images optimized! Starting to update list.")
+        nick_log.log_routine("[OK] Images optimized! Starting to update list.")
         Quick_Update_List()
 
 except (
@@ -542,7 +542,7 @@ except (
     tkCore.TclError,
     AttributeError,
 ) as eM:
-    nLog.logRoutine(f"[X] ERROR: {eM}", False)
+    nick_log.log_routine(f"[X] ERROR: {eM}", False)
     messagebox.showerror(
         title="Error",
         message="Check the log for details.",
@@ -550,13 +550,13 @@ except (
     )
 
 except Exception as eFatal:
-    nLog.logRoutine(f"[X] FATAL ERROR: {eFatal}")
+    nick_log.log_routine(f"[X] FATAL ERROR: {eFatal}")
 
 except:
-    nLog.logRoutine("[X] FATAL ERROR: Unknown error!")
+    nick_log.log_routine("[X] FATAL ERROR: Unknown error!")
 
 # 🙌 __Main__
 if __name__ == "__main__":
-    nLog.logRoutine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
+    nick_log.log_routine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
     Root_Window.after(500, Scheduler_Controller)
     Root_Window.mainloop()

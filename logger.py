@@ -8,10 +8,10 @@ from pathlib import Path
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 LOGS_PATH = OUTPUT_PATH / Path("./logs")
 
-# load "version.json", get the "currentVersion" and store inside a variable called "currentVersion".
+# load "version.json", get the "current_version" and store inside a variable called "current_version".
 with open(f"{OUTPUT_PATH}/version.json", "r") as version_file:
     version_data = json.load(version_file)
-    currentVersion = version_data["currentVersion"]
+    current_version = version_data["currentVersion"]
 
 
 def relative_to_logs(path: str) -> Path:
@@ -23,28 +23,28 @@ def relative_to_logs(path: str) -> Path:
 if not LOGS_PATH.exists():
     LOGS_PATH.mkdir()
 
-logRoutineSwitch = True
-debugMode = True
+log_routine_switch = True
+debug_mode = True
 
 
-class nickLogger:
+class nick_logger:
     """Logger class to be imported as a simple object"""
 
-    def logRoutineController(debugModeC: bool = True, logRoutineC: bool = True):
-        """Enable/Disable the logRoutine function. Defaults: debugModeC = True, logRoutineC = True"""
-        global logRoutineSwitch
-        global debugMode
-        logRoutineSwitch = logRoutineC
-        debugMode = debugModeC
+    def log_routine_controller(debug_Mode_C: bool = True, log_routine_C: bool = True):
+        """Enable/Disable the log_routine function. Defaults: debug_Mode_C = True, log_routine_C = True"""
+        global log_routine_switch
+        global debug_mode
+        log_routine_switch = log_routine_C
+        debug_mode = debug_Mode_C
 
-    def logRoutine(log: str, timeNeeded: bool = True):
-        """Write strings to the log file and if debug is enabled, print it to console. ARGS: log, timeNeeded = True"""
+    def log_routine(log: str, time_needed: bool = True):
+        """Write strings to the log file and if debug is enabled, print it to console. ARGS: log, time_needed = True"""
 
-        if timeNeeded is None:
-            timeNeeded = True
+        if time_needed is None:
+            time_needed = True
 
-        currentTime = time.strftime("%m-%d-%Y -> %H:%M:%S")
-        logHeader = f"""{currentVersion}
+        current_time = time.strftime("%m-%d-%Y -> %H:%M:%S")
+        log_header = f"""{current_version}
 ===================================================
             LOG FILE MADE FOR DEBUG PURPOSES
         made by Nicolas Mendes - September 2021
@@ -54,42 +54,42 @@ class nickLogger:
         # Check if "ioc.log" exists, if not create this file.
         if not os.path.exists(relative_to_logs("ioc.log")):
             open(f"{relative_to_logs('ioc.log')}", "w+")
-            # append logHeader to the file.
-            with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-                logFile.write(logHeader)
+            # append log_header to the file.
+            with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+                log_file.write(log_header)
 
-        # if the first line of ioc.log is different from currentVersion
-        with open(f"{relative_to_logs('ioc.log')}") as checkVer:
-            firstlineVer = checkVer.readline().rstrip()
-            if firstlineVer != currentVersion:
-                if firstlineVer == "" or firstlineVer == " ":
-                    with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
-                        logFile.write(logHeader)
-                        logFile.write(
+        # if the first line of ioc.log is different from current_version
+        with open(f"{relative_to_logs('ioc.log')}") as check_ver:
+            first_line_ver = check_ver.readline().rstrip()
+            if first_line_ver != current_version:
+                if first_line_ver == "" or first_line_ver == " ":
+                    with open(f"{relative_to_logs('ioc.log')}", "w+") as log_file:
+                        log_file.write(log_header)
+                        log_file.write(
                             "\n\n[NOTICE] Log file has been deleted or cleaned.\n"
                         )
                 else:
-                    # Delete everything inside the file and append logHeader.
-                    with open(f"{relative_to_logs('ioc.log')}", "w+") as logFile:
-                        logFile.write(logHeader)
-                        logFile.write(
-                            f"\n\n[NOTICE] IOC HAS BEEN UPDATED TO {currentVersion}!\n"
+                    # Delete everything inside the file and append log_header.
+                    with open(f"{relative_to_logs('ioc.log')}", "w+") as log_file:
+                        log_file.write(log_header)
+                        log_file.write(
+                            f"\n\n[NOTICE] IOC HAS BEEN UPDATED TO {current_version}!\n"
                         )
 
-        # if the file exceeds 1000 lines, delete everything and append logHeader to the file.
-        with open(f"{relative_to_logs('ioc.log')}", "r") as logFile:
-            if len(logFile.readlines()) > 1000:
-                with open(f"{relative_to_logs('ioc.log')}", "w") as logFile:
-                    logFile.write(logHeader)
+        # if the file exceeds 1000 lines, delete everything and append log_header to the file.
+        with open(f"{relative_to_logs('ioc.log')}", "r") as log_file:
+            if len(log_file.readlines()) > 1000:
+                with open(f"{relative_to_logs('ioc.log')}", "w") as log_file:
+                    log_file.write(log_header)
 
-        if logRoutineSwitch == True:
+        if log_routine_switch == True:
             # Append the log to the file.
-            if timeNeeded == True:
-                with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-                    logFile.write(f"{currentTime} - {log}\n")
+            if time_needed == True:
+                with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+                    log_file.write(f"{current_time} - {log}\n")
             else:
-                with open(f"{relative_to_logs('ioc.log')}", "a") as logFile:
-                    logFile.write(f"{log}\n")
+                with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+                    log_file.write(f"{log}\n")
 
-        if debugMode == True:
+        if debug_mode == True:
             return print(f"DEBUG LOG: {log}")
