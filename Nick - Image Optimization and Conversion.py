@@ -160,7 +160,7 @@ try:
             entry_DefPath.set(str(Printable_Files))
 
         # Regular expression to pick all words after the last "/".
-        # folderImgs = re.findall(r"[^\\\/]+$", Printable_Files)
+        # Folder_Imgs = re.findall(r"[^\\\/]+$", Printable_Files)
         nLog.logRoutine(
             f"inside loadFolderForImg: {Printable_Files}, {entry_DefPath.get()} and {entry_1.get()}"
         )
@@ -232,16 +232,16 @@ try:
     )
 
     # Checkbox (To reduce resolution by half)
-    reduceByHalf = IntVar()
-    reduceByHalfChck = Checkbutton(
+    Reduce_By_Half = IntVar()
+    Reduce_By_HalfChck = Checkbutton(
         text="Smart Scale Mode",
-        variable=reduceByHalf,
+        variable=Reduce_By_Half,
         bg="#AC59F3",
         fg="#FFFFFF",
         font=("Mulish Regular", 13 * -1),
     )
-    reduceByHalfChck.deselect()
-    reduceByHalfChck.place(relx=0.03, rely=0.7, anchor="nw")
+    Reduce_By_HalfChck.deselect()
+    Reduce_By_HalfChck.place(relx=0.03, rely=0.7, anchor="nw")
 
     # Logo Icon
     image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
@@ -261,21 +261,21 @@ try:
         nLog.logRoutine("Beginning cleaning routine")
 
         for file in files:
-            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+            File_Name = re.sub(r"\s+|\d|\(|\)", "_", file)
 
             if (
-                fileName.endswith(".png")
-                or fileName.endswith(".jpg")
-                or fileName.endswith(".jpeg")
-                or fileName.endswith(".gif")
+                File_Name.endswith(".png")
+                or File_Name.endswith(".jpg")
+                or File_Name.endswith(".jpeg")
+                or File_Name.endswith(".gif")
             ):
                 # Delete original file
-                nLog.logRoutine(f"Deleting {fileName}")
-                os.remove(f"{folderImgs}/{fileName}")
+                nLog.logRoutine(f"Deleting {File_Name}")
+                os.remove(f"{Folder_Imgs}/{File_Name}")
 
     # =========== 📜 Check Function ===========
 
-    folderImgs = entry_1.get()
+    Folder_Imgs = entry_1.get()
 
     def Quick_Update_List():
         """Refresh the list quicker."""
@@ -308,23 +308,23 @@ try:
         """Update the list box with all files found in the folder"""
 
         global files
-        global folderImgs
+        global Folder_Imgs
 
-        folderImgs = entry_1.get()
+        Folder_Imgs = entry_1.get()
 
         # check if backup folder exists inside images folder
-        if not os.path.exists(f"{folderImgs}/backup"):
-            os.mkdir(f"{folderImgs}/backup")
+        if not os.path.exists(f"{Folder_Imgs}/backup"):
+            os.mkdir(f"{Folder_Imgs}/backup")
             nLog.logRoutine("[OK] Backup folder created.")
 
-        updateFilesFound = os.listdir(Images_PATH)
-        files = updateFilesFound
+        Update_Files_Found = os.listdir(Images_PATH)
+        files = Update_Files_Found
 
         list_items.delete(0, END)
         for file in files:
 
             # regular expression to replace spaces to underlines and remove any digits.
-            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+            File_Name = re.sub(r"\s+|\d|\(|\)", "_", file)
 
             if (
                 file.endswith(".png")
@@ -334,29 +334,29 @@ try:
             ):
                 # rename all files to replace spaces to underlines.
                 os.rename(
-                    os.path.join(folderImgs, file),
-                    os.path.join(folderImgs, fileName),
+                    os.path.join(Folder_Imgs, file),
+                    os.path.join(Folder_Imgs, File_Name),
                 )
-                list_items.insert(END, fileName)
-                nLog.logRoutine(f"[OK] Found valid images in {folderImgs} with {file}.")
+                list_items.insert(END, File_Name)
+                nLog.logRoutine(f"[OK] Found valid images in {Folder_Imgs} with {file}.")
 
             if file.endswith(".webp") and "Optimized" not in file:
-                NovemberfileName = file.replace(".webp", "")
+                November_File_Name = file.replace(".webp", "")
 
-                OscarfileName = re.sub(r"\_[_][_]|\_|\_[_]", " ", NovemberfileName)
-                OscarfileName = re.sub(r"^\s+|\s+$", "", OscarfileName)
+                Oscar_File_Name = re.sub(r"\_[_][_]|\_|\_[_]", " ", November_File_Name)
+                Oscar_File_Name = re.sub(r"^\s+|\s+$", "", Oscar_File_Name)
 
-                nLog.logRoutine(f"Renaming {file} to {OscarfileName}")
+                nLog.logRoutine(f"Renaming {file} to {Oscar_File_Name}")
 
-                if OscarfileName == " " or OscarfileName == "":
+                if Oscar_File_Name == " " or Oscar_File_Name == "":
                     os.rename(
-                        f"{folderImgs}/{file}",
-                        f"{folderImgs}/Optimized {len(OscarfileName)}.webp",
+                        f"{Folder_Imgs}/{file}",
+                        f"{Folder_Imgs}/Optimized {len(Oscar_File_Name)}.webp",
                     )
                 else:
                     os.rename(
-                        f"{folderImgs}/{file}",
-                        f"{folderImgs}/Optimized {OscarfileName}.webp",
+                        f"{Folder_Imgs}/{file}",
+                        f"{Folder_Imgs}/Optimized {Oscar_File_Name}.webp",
                     )
 
                 Quick_Update_List()
@@ -366,25 +366,25 @@ try:
     def optimizationFunction():
         """Optimization function to reduce the resolution of the images and remove images bloatware."""
 
-        global reduceByHalf
+        global Reduce_By_Half
         global files
 
         nLog.logRoutine(
             f"These are all of the files in our current working directory: {files}"
         )
-        confirmDownRes = IntVar()
-        confirmDownRes = reduceByHalf.get()
+        Confirm_Down_Res = IntVar()
+        Confirm_Down_Res = Reduce_By_Half.get()
 
         # check if backup folder exists inside images folder
-        if not os.path.exists(f"{folderImgs}/backup"):
-            os.mkdir(f"{folderImgs}/backup")
+        if not os.path.exists(f"{Folder_Imgs}/backup"):
+            os.mkdir(f"{Folder_Imgs}/backup")
             nLog.logRoutine("[OK] Backup folder created.")
 
         Update_Listbox()
 
         for file in files:
 
-            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+            File_Name = re.sub(r"\s+|\d|\(|\)", "_", file)
 
             if (
                 file.endswith(".png")
@@ -393,39 +393,39 @@ try:
                 or file.endswith(".gif")
             ):
 
-                nLog.logRoutine(f"[OK] Renamed {file} to {fileName}")
+                nLog.logRoutine(f"[OK] Renamed {file} to {File_Name}")
                 # Backup operation
                 shutil.copy(
-                    f"{folderImgs}/{fileName}",
-                    f"{folderImgs}/backup/_backup_{fileName}",
+                    f"{Folder_Imgs}/{File_Name}",
+                    f"{Folder_Imgs}/backup/_backup_{File_Name}",
                 )
-                nLog.logRoutine(f"Copying {fileName} to backup folder")
+                nLog.logRoutine(f"Copying {File_Name} to backup folder")
 
-                nLog.logRoutine(f"Optimizing {fileName}")
+                nLog.logRoutine(f"Optimizing {File_Name}")
 
-                imgOptimize = Image.open(relative_to_images(str(fileName)))
-                imgWidth, imgHeight = imgOptimize.size
+                Img_Optimize = Image.open(relative_to_images(str(File_Name)))
+                imgWidth, imgHeight = Img_Optimize.size
                 nLog.logRoutine(f"Image size: {imgWidth} x {imgHeight}")
-                nLog.logRoutine(f"The state of resolution option is: {confirmDownRes}")
+                nLog.logRoutine(f"The state of resolution option is: {Confirm_Down_Res}")
 
                 list_items.delete(0, END)
-                list_items.insert(END, fileName)
+                list_items.insert(END, File_Name)
 
-                # If confirmDownRes = 1, imgWidth and imgHeight are larger than 1366x768 reduce the resolution by half.
+                # If Confirm_Down_Res = 1, imgWidth and imgHeight are larger than 1366x768 reduce the resolution by half.
                 if (
                     (imgWidth > 1366 and imgHeight > 768)
                     or (imgWidth > 1400 and imgHeight > 1400)
-                    and confirmDownRes == 1
+                    and Confirm_Down_Res == 1
                 ):
-                    imgOptimize = imgOptimize.resize(
+                    Img_Optimize = Img_Optimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
-                    nLog.logRoutine(f"Reducing image resolution by half of {fileName}")
-                    nLog.logRoutine(f"[OK] Optimized {fileName}")
+                    nLog.logRoutine(f"Reducing image resolution by half of {File_Name}")
+                    nLog.logRoutine(f"[OK] Optimized {File_Name}")
 
                     if file.endswith(".png"):
-                        imgOptimize.save(
-                            str(relative_to_images(str(fileName))),
+                        Img_Optimize.save(
+                            str(relative_to_images(str(File_Name))),
                             optimize=True,
                             quality=70,
                         )
@@ -434,8 +434,8 @@ try:
                         or file.endswith(".jpeg")
                         or file.endswith(".gif")
                     ):
-                        imgOptimize.save(
-                            str(relative_to_images(str(fileName))),
+                        Img_Optimize.save(
+                            str(relative_to_images(str(File_Name))),
                             optimize=True,
                             quality=80,
                         )
@@ -443,33 +443,33 @@ try:
                 # If user don't want to reduce image resolution by half.
                 else:
                     nLog.logRoutine(
-                        f"Image: {fileName}, is not larger enough to reduce resolution."
+                        f"Image: {File_Name}, is not larger enough to reduce resolution."
                     )
 
-                    nLog.logRoutine(f"Performing standard optimization on {fileName}")
-                    if fileName.endswith(".png"):
-                        imgOptimize.save(
-                            str(relative_to_images(str(fileName))),
+                    nLog.logRoutine(f"Performing standard optimization on {File_Name}")
+                    if File_Name.endswith(".png"):
+                        Img_Optimize.save(
+                            str(relative_to_images(str(File_Name))),
                             optimize=True,
                             quality=70,
                         )
 
                     if (
-                        fileName.endswith(".jpg")
-                        or fileName.endswith(".jpeg")
-                        or fileName.endswith(".gif")
+                        File_Name.endswith(".jpg")
+                        or File_Name.endswith(".jpeg")
+                        or File_Name.endswith(".gif")
                     ):
-                        imgOptimize.save(
-                            str(relative_to_images(str(fileName))),
+                        Img_Optimize.save(
+                            str(relative_to_images(str(File_Name))),
                             optimize=True,
                             quality=80,
                         )
 
-                nLog.logRoutine(f"[OK] {fileName} optimized!")
+                nLog.logRoutine(f"[OK] {File_Name} optimized!")
 
             else:
                 nLog.logRoutine(
-                    f"No valid files found in {folderImgs} with {fileName}... Checking again."
+                    f"No valid files found in {Folder_Imgs} with {File_Name}... Checking again."
                 )
 
         Convertion_Function()
@@ -486,40 +486,40 @@ try:
 
         for file in files:
 
-            fileName = re.sub(r"\s+|\d|\(|\)", "_", file)
+            File_Name = re.sub(r"\s+|\d|\(|\)", "_", file)
 
             if (
-                fileName.endswith(".png")
-                or fileName.endswith(".jpg")
-                or fileName.endswith(".jpeg")
-                or fileName.endswith(".gif")
+                File_Name.endswith(".png")
+                or File_Name.endswith(".jpg")
+                or File_Name.endswith(".jpeg")
+                or File_Name.endswith(".gif")
             ):
-                nLog.logRoutine(f"Converting {fileName} to WebP")
-                loadImg = Image.open(relative_to_images(str(fileName)))
+                nLog.logRoutine(f"Converting {File_Name} to WebP")
+                Load_Img = Image.open(relative_to_images(str(File_Name)))
 
-                # remove ".png", ".jpg", ".jpeg", ".gif" from fileName
-                if fileName.endswith(".png"):
-                    DeltafileName = fileName.replace(".png", "")
-                elif fileName.endswith(".jpg"):
-                    DeltafileName = fileName.replace(".jpg", "")
-                elif fileName.endswith(".jpeg"):
-                    DeltafileName = fileName.replace(".jpeg", "")
-                elif fileName.endswith(".gif"):
-                    DeltafileName = fileName.replace(".gif", "")
+                # remove ".png", ".jpg", ".jpeg", ".gif" from File_Name
+                if File_Name.endswith(".png"):
+                    Delta_File_Name = File_Name.replace(".png", "")
+                elif File_Name.endswith(".jpg"):
+                    Delta_File_Name = File_Name.replace(".jpg", "")
+                elif File_Name.endswith(".jpeg"):
+                    Delta_File_Name = File_Name.replace(".jpeg", "")
+                elif File_Name.endswith(".gif"):
+                    Delta_File_Name = File_Name.replace(".gif", "")
 
-                loadImg.save(
-                    str(relative_to_images(str(DeltafileName))) + ".webp",
+                Load_Img.save(
+                    str(relative_to_images(str(Delta_File_Name))) + ".webp",
                     "WEBP",
                     quality=80,
                 )
-                nLog.logRoutine(f"[OK] {fileName} converted to WebP")
+                nLog.logRoutine(f"[OK] {File_Name} converted to WebP")
 
             else:
-                nLog.logRoutine(f"{fileName} is not a eligible, skipping...")
+                nLog.logRoutine(f"{File_Name} is not a eligible, skipping...")
 
         # Show a message window with "Optimization and conversion completed!"
         Cleaning_Routine()
-        subprocess.Popen(["open", "-R", folderImgs])
+        subprocess.Popen(["open", "-R", Folder_Imgs])
         messagebox.showinfo(
             title="Optimization and conversion completed! \n",
             message="All files have been optimized and converted to WebP!",
