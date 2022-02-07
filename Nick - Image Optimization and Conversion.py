@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-import re
-import os
-import PIL
-import pathlib
-import shutil
-import subprocess
-import time
+import re, os, PIL, time, pathlib, subprocess, shutil
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
