@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # 🧶 Modules Imports
 # Try following pep8 (https://pep8.org/) and try using "black" as the default formatter.
+# In this case, use Snake case with the first letter of each word capitalized.
 import re
 import os 
 import time
@@ -54,12 +55,12 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 Images_PATH = OUTPUT_PATH / Path("./images")
 
 
-def get_timestamp():
+def Get_Timestamp():
     """Return a unix timestamp."""
     return time.time()
 
 
-def relative_to_assets(path: str) -> Path:
+def Relative_To_Assets(path: str) -> Path:
     """Return a path relative to the assets folder."""
     nLog.logRoutine(
         f"[WARNING] Assets folder have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
@@ -67,7 +68,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-def relative_to_images(path: str) -> Path:
+def Relative_To_Images(path: str) -> Path:
     """Return a path relative to the images folder."""
     nLog.logRoutine(
         f"[WARNING] Images folder path have been accessed.\n|--------------------------------> [OK] {path} has been loaded."
@@ -76,7 +77,7 @@ def relative_to_images(path: str) -> Path:
 
 
 nLog.logRoutine(
-    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {Pid} | UTS: {get_timestamp()}\n",
+    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {Pid} | UTS: {Get_Timestamp()}\n",
     False,
 )
 
@@ -88,7 +89,7 @@ try:
     Root_Window.geometry("980x580")
     Root_Window.configure(bg="#FFFFFF")
     Root_Window.title("Nick - Image Optimization and Conversion")
-    Root_Window.iconbitmap(relative_to_assets("icon.ico"))
+    Root_Window.iconbitmap(Relative_To_Assets("icon.ico"))
 
     # 💬 Variables
 
@@ -108,11 +109,11 @@ try:
 
     # Buttons and Labels
     canvas.place(x=0, y=0)
-    image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
+    image_image_1 = PhotoImage(file=Relative_To_Assets("image_1.png"))
     image_1 = canvas.create_image(95.0, 290.0, image=image_image_1)
 
     # Make magic button ( Aka optimizing and conversion functions )
-    button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+    button_image_1 = PhotoImage(file=Relative_To_Assets("button_1.png"))
     button_1 = Button(
         image=button_image_1,
         borderwidth=0,
@@ -122,14 +123,14 @@ try:
     )
     button_1.place(x=28.0, y=502.0, width=135.0, height=46.0)
 
-    image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
+    image_image_2 = PhotoImage(file=Relative_To_Assets("image_2.png"))
     image_2 = canvas.create_image(577.0, 348.0, image=image_image_2)
 
-    image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
+    image_image_3 = PhotoImage(file=Relative_To_Assets("image_3.png"))
     image_3 = canvas.create_image(577.0, 64.0, image=image_image_3)
 
     # Browse Button ( Aka selecting files )
-    button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
+    button_image_2 = PhotoImage(file=Relative_To_Assets("button_2.png"))
     button_2 = Button(
         image=button_image_2,
         borderwidth=0,
@@ -171,7 +172,7 @@ try:
     # Entry to load files
     entry_DefPath = StringVar()
     entry_DefPath.set(str(Images_PATH))
-    entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
+    entry_image_1 = PhotoImage(file=Relative_To_Assets("entry_1.png"))
     entry_bg_1 = canvas.create_image(567.5, 74.0, image=entry_image_1)
     entry_1 = Entry(
         bd=0,
@@ -218,7 +219,7 @@ try:
         font=("Mulish Regular", 16 * -1),
     )
 
-    image_image_4 = PhotoImage(file=relative_to_assets("image_4.png"))
+    image_image_4 = PhotoImage(file=Relative_To_Assets("image_4.png"))
     image_4 = canvas.create_image(226.0, 165.0, image=image_image_4)
 
     # Logo text ( Don't touch )
@@ -244,7 +245,7 @@ try:
     Reduce_By_HalfChck.place(relx=0.03, rely=0.7, anchor="nw")
 
     # Logo Icon
-    image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
+    image_image_6 = PhotoImage(file=Relative_To_Assets("image_6.png"))
     image_6 = canvas.create_image(95.0, 64.0, image=image_image_6)
 
     # ⚙️ Logic and Defs
@@ -403,7 +404,7 @@ try:
 
                 nLog.logRoutine(f"Optimizing {File_Name}")
 
-                Img_Optimize = Image.open(relative_to_images(str(File_Name)))
+                Img_Optimize = Image.open(Relative_To_Images(str(File_Name)))
                 imgWidth, imgHeight = Img_Optimize.size
                 nLog.logRoutine(f"Image size: {imgWidth} x {imgHeight}")
                 nLog.logRoutine(f"The state of resolution option is: {Confirm_Down_Res}")
@@ -425,7 +426,7 @@ try:
 
                     if file.endswith(".png"):
                         Img_Optimize.save(
-                            str(relative_to_images(str(File_Name))),
+                            str(Relative_To_Images(str(File_Name))),
                             optimize=True,
                             quality=70,
                         )
@@ -435,7 +436,7 @@ try:
                         or file.endswith(".gif")
                     ):
                         Img_Optimize.save(
-                            str(relative_to_images(str(File_Name))),
+                            str(Relative_To_Images(str(File_Name))),
                             optimize=True,
                             quality=80,
                         )
@@ -449,7 +450,7 @@ try:
                     nLog.logRoutine(f"Performing standard optimization on {File_Name}")
                     if File_Name.endswith(".png"):
                         Img_Optimize.save(
-                            str(relative_to_images(str(File_Name))),
+                            str(Relative_To_Images(str(File_Name))),
                             optimize=True,
                             quality=70,
                         )
@@ -460,7 +461,7 @@ try:
                         or File_Name.endswith(".gif")
                     ):
                         Img_Optimize.save(
-                            str(relative_to_images(str(File_Name))),
+                            str(Relative_To_Images(str(File_Name))),
                             optimize=True,
                             quality=80,
                         )
@@ -495,7 +496,7 @@ try:
                 or File_Name.endswith(".gif")
             ):
                 nLog.logRoutine(f"Converting {File_Name} to WebP")
-                Load_Img = Image.open(relative_to_images(str(File_Name)))
+                Load_Img = Image.open(Relative_To_Images(str(File_Name)))
 
                 # remove ".png", ".jpg", ".jpeg", ".gif" from File_Name
                 if File_Name.endswith(".png"):
@@ -508,7 +509,7 @@ try:
                     Delta_File_Name = File_Name.replace(".gif", "")
 
                 Load_Img.save(
-                    str(relative_to_images(str(Delta_File_Name))) + ".webp",
+                    str(Relative_To_Images(str(Delta_File_Name))) + ".webp",
                     "WEBP",
                     quality=80,
                 )
