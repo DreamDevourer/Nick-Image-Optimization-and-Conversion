@@ -2,10 +2,7 @@ r"""Logger module made for quick logging and troubleshooting Python programs by 
 Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
-import pathlib
-import os
-import time
-import json
+import pathlib, os, time, json
 from pathlib import Path
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
