@@ -89,7 +89,7 @@ try:
     Root_Window = Tk()
     Root_Window.resizable(False, False)
     Root_Window.geometry("980x580")
-    Root_Window.configure(bg="#FFFFFF")
+    Root_Window.configure(bg="#151515")
     Root_Window.title("Nick - Image Optimization and Conversion")
     Root_Window.iconbitmap(Relative_To_Assets("icon.ico"))
 
@@ -101,7 +101,7 @@ try:
     # 🌈 UI
     canvas = Canvas(
         Root_Window,
-        bg="#FFFFFF",
+        bg="#151515",
         height=580,
         width=980,
         bd=0,
@@ -178,10 +178,10 @@ try:
     entry_bg_1 = canvas.create_image(567.5, 74.0, image=entry_image_1)
     entry_1 = Entry(
         bd=0,
-        bg="#FFFFFF",
-        fg="#000000",
-        disabledbackground="#FFFFFF",
-        disabledforeground="#000000",
+        bg="#2D2D2D",
+        fg="#FFFFFF",
+        disabledbackground="#2D2D2D",
+        disabledforeground="#FFFFFF",
         textvariable=entry_DefPath,
         highlightthickness=0,
         state="disabled",
@@ -194,7 +194,7 @@ try:
         53.0,
         anchor="nw",
         text="Select Folder",
-        fill="#000000",
+        fill="#FFFFFF",
         font=("Mulish Regular", 18 * -1),
     )
 
@@ -204,8 +204,8 @@ try:
         y=115.0,
         height=5,
         width=50,
-        bg="#ECEBFB",
-        fg="#000000",
+        bg="#232323",
+        fg="#FFFFFF",
         font=("Mulish Regular", 18 * -1),
         highlightcolor="#ECC0FB",
         border=0,
@@ -217,7 +217,7 @@ try:
         155.0,
         anchor="nw",
         text="Images found inside the folder",
-        fill="#000000",
+        fill="#FFFFFF",
         font=("Mulish Regular", 16 * -1),
     )
 
