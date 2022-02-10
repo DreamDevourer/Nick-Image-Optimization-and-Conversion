@@ -40,6 +40,8 @@ if not LOGS_PATH.exists():
 
 log_routine_switch = True
 debug_mode = True
+file_log_name = "ioc"
+max_lines_allowed = 1000
 
 # 🔖 Main class
 
@@ -50,12 +52,17 @@ class nick_logger:
 
     # ✍️ Module controller
 
-    def log_routine_controller(debug_Mode_C: bool = True, log_routine_C: bool = True):
-        """Enable/Disable the log_routine function. Defaults: debug_Mode_C = True, log_routine_C = True"""
+    def log_routine_controller(debug_Mode_C: bool = True, log_routine_C: bool = True, file_name: str = "ioc", max_lines: int = 1000):
+        """Control Log Routine main function. Defaults: debug_Mode_C = True, log_routine_C = True, file_name = "ioc", max_lines = 1000"""
         global log_routine_switch
         global debug_mode
+        global file_log_name
+        global max_lines_allowed
+
         log_routine_switch = log_routine_C
         debug_mode = debug_Mode_C
+        file_log_name = file_name
+        max_lines_allowed = max_lines
 
     # 📖 Main log function
     
@@ -73,44 +80,44 @@ class nick_logger:
 ===================================================\n
 """
 
-        # Check if "ioc.log" exists, if not create this file.
-        if not os.path.exists(relative_to_logs("ioc.log")):
-            open(f"{relative_to_logs('ioc.log')}", "w+")
+        # Check if "{file_log_name}.log" exists, if not create this file.
+        if not os.path.exists(relative_to_logs(f'{file_log_name}.log')):
+            open(f"{relative_to_logs(f'{file_log_name}.log')}", "w+")
             # append log_header to the file.
-            with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+            with open(f"{relative_to_logs(f'{file_log_name}.log')}", "a") as log_file:
                 log_file.write(log_header)
 
-        # if the first line of ioc.log is different from current_version
-        with open(f"{relative_to_logs('ioc.log')}") as check_ver:
+        # if the first line of {file_log_name}.log is different from current_version
+        with open(f"{relative_to_logs(f'{file_log_name}.log')}") as check_ver:
             first_line_ver = check_ver.readline().rstrip()
             if first_line_ver != current_version:
                 if first_line_ver == "" or first_line_ver == " ":
-                    with open(f"{relative_to_logs('ioc.log')}", "w+") as log_file:
+                    with open(f"{relative_to_logs(f'{file_log_name}.log')}", "w+") as log_file:
                         log_file.write(log_header)
                         log_file.write(
                             "\n\n[NOTICE] Log file has been deleted or cleaned.\n"
                         )
                 else:
                     # Delete everything inside the file and append log_header.
-                    with open(f"{relative_to_logs('ioc.log')}", "w+") as log_file:
+                    with open(f"{relative_to_logs(f'{file_log_name}.log')}", "w+") as log_file:
                         log_file.write(log_header)
                         log_file.write(
-                            f"\n\n[NOTICE] IOC HAS BEEN UPDATED TO {current_version}!\n"
+                            f"\n\n[NOTICE] PROGRAM HAS BEEN UPDATED TO {current_version}!\n"
                         )
 
         # if the file exceeds 1000 lines, delete everything and append log_header to the file.
-        with open(f"{relative_to_logs('ioc.log')}", "r") as log_file:
-            if len(log_file.readlines()) > 1000:
-                with open(f"{relative_to_logs('ioc.log')}", "w") as log_file:
+        with open(f"{relative_to_logs(f'{file_log_name}.log')}", "r") as log_file:
+            if len(log_file.readlines()) > {max_lines_allowed}:
+                with open(f"{relative_to_logs(f'{file_log_name}.log')}", "w") as log_file:
                     log_file.write(log_header)
 
         if log_routine_switch == True:
             # Append the log to the file.
             if time_needed == True:
-                with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+                with open(f"{relative_to_logs(f'{file_log_name}.log')}", "a") as log_file:
                     log_file.write(f"{current_time} - {log}\n")
             else:
-                with open(f"{relative_to_logs('ioc.log')}", "a") as log_file:
+                with open(f"{relative_to_logs(f'{file_log_name}.log')}", "a") as log_file:
                     log_file.write(f"{log}\n")
 
         if debug_mode == True:

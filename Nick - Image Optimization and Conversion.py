@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # 🧶 Modules Imports
-# Try following pep8 (https://pep8.org/) and try using "black" 
+# Try following pep8 (https://pep8.org/) and try using "black"
 # as the default formatter.
-# In this case, use Snake case with the first letter of each word 
+# In this case, use Snake case with the first letter of each word
 # capitalized. Lowecase for imports and classes only.
 import re
 import os
@@ -90,7 +90,7 @@ try:
     Root_Window.resizable(False, False)
     Root_Window.geometry("980x580")
     Root_Window.configure(bg="#151515")
-    Root_Window.title("Nick - Image Optimization and Conversion")
+    Root_Window.title("Image Optimization and Conversion")
     Root_Window.iconbitmap(Relative_To_Assets("icon.ico"))
 
     # 💬 Variables
