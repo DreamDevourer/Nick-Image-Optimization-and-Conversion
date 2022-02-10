@@ -107,7 +107,7 @@ class nick_logger:
 
         # if the file exceeds 1000 lines, delete everything and append log_header to the file.
         with open(f"{relative_to_logs(f'{file_log_name}.log')}", "r") as log_file:
-            if len(log_file.readlines()) > {max_lines_allowed}:
+            if len(log_file.readlines()) > max_lines_allowed:
                 with open(f"{relative_to_logs(f'{file_log_name}.log')}", "w") as log_file:
                     log_file.write(log_header)
 
