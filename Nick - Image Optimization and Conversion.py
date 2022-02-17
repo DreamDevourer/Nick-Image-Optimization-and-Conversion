@@ -6,6 +6,7 @@
 # capitalized. Lowecase for imports and classes only.
 import re
 import os
+import platform
 import time
 import pathlib
 import subprocess
@@ -50,6 +51,7 @@ SUMMARY:
 # ✍️ Initial Setup to load assets
 
 Pid = os.getpid()
+OS_Detector = platform.system()
 Log_Routine_Controller = nick_log.log_routine_controller(False)
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
@@ -79,7 +81,7 @@ def Relative_To_Images(path: str) -> Path:
 
 
 nick_log.log_routine(
-    f"\n\n[OK] ===> Python loaded. Starting new instance at PID: {Pid} | UTS: {Get_Timestamp()}\n",
+    f"\n\n[OK] ===> Python loaded on {OS_Detector}. Starting new instance at PID: {Pid} | UTS: {Get_Timestamp()}\n",
     False,
 )
 
@@ -91,12 +93,26 @@ try:
     Root_Window.geometry("980x580")
     Root_Window.configure(bg="#151515")
     Root_Window.title("Image Optimization and Conversion")
-    Root_Window.iconbitmap(Relative_To_Assets("icon.ico"))
+    if OS_Detector == "Windows" or OS_Detector == "Darwin":
+        Root_Window.iconbitmap(Relative_To_Assets("icon.ico"))
 
     # 💬 Variables
 
     files = os.listdir(Images_PATH)
     Printable_Files = Images_PATH
+
+    # LINUX PATCHES
+
+    if OS_Detector == "Linux":
+        Select_Folder_Font_Size = 12
+        List_X_Position = 0.59
+        IOC_Type_Size = 24
+        Checkbox_Label_Size = 9
+    else:
+        Select_Folder_Font_Size = 18
+        List_X_Position = 0.5
+        IOC_Type_Size = 36
+        Checkbox_Label_Size = 13
 
     # 🌈 UI
     canvas = Canvas(
@@ -195,7 +211,7 @@ try:
         anchor="nw",
         text="Select Folder",
         fill="#FFFFFF",
-        font=("Mulish Regular", 18 * -1),
+        font=("Mulish Regular", Select_Folder_Font_Size * -1),
     )
 
     # Listbox to show files loaded Root_Window
@@ -210,7 +226,7 @@ try:
         highlightcolor="#ECC0FB",
         border=0,
     )
-    list_items.place(relx=0.5, rely=0.5, anchor="center")
+    list_items.place(relx=List_X_Position, rely=0.5, anchor="center")
 
     canvas.create_text(
         253.0,
@@ -231,7 +247,7 @@ try:
         anchor="nw",
         text="I.O.C",
         fill="#FFFFFF",
-        font=("Mulish Bold", 36 * -1),
+        font=("Mulish Bold", IOC_Type_Size * -1),
     )
 
     # Checkbox (To reduce resolution by half)
@@ -241,7 +257,7 @@ try:
         variable=Reduce_By_Half,
         bg="#AC59F3",
         fg="#FFFFFF",
-        font=("Mulish Regular", 13 * -1),
+        font=("Mulish Regular", Checkbox_Label_Size * -1),
     )
     Reduce_By_HalfChck.deselect()
     Reduce_By_HalfChck.place(relx=0.03, rely=0.7, anchor="nw")
@@ -560,5 +576,6 @@ except:
 # 🙌 __main__
 if __name__ == "__main__":
     nick_log.log_routine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
-    Root_Window.after(500, Scheduler_Controller)
+    if OS_Detector == "Windows" or OS_Detector == "Darwin":
+        Root_Window.after(500, Scheduler_Controller)
     Root_Window.mainloop()
