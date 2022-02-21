@@ -3,7 +3,7 @@ Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
 # 🧶 Modules Imports
-import pathlib, os, time, json, platform
+import pathlib, os, time, json, platform, base64, re
 from pathlib import Path
 
 """ Made by Nicolas Mendes - Feb 2022
@@ -65,18 +65,16 @@ def relative_to_logs(path: str) -> Path:
 if not LOGS_PATH.exists():
     LOGS_PATH.mkdir()
 
-log_routine_switch = True
-debug_mode = True
-file_log_name = "ioc"
-max_lines_allowed = 1000
-Pid = os.getpid()
+log_routine_switch = None
+debug_mode = None
+file_log_name = None
+max_lines_allowed = None
+Pid = None
 current_time = time.strftime("%m-%d-%Y -> %H:%M:%S")
-get_timestamp = time.time()
-OS_Detector = platform.system()
+get_timestamp = None
+OS_Detector = None
 
 # 🔖 Main class
-
-
 class nick_logger:
     """Logger class to be imported as a simple object"""
 
@@ -87,13 +85,13 @@ class nick_logger:
     def log_routine_controller(
         debug_Mode_C: bool = True,
         log_routine_C: bool = True,
-        file_name: str = "ioc",
+        file_name: str = "logs",
         max_lines: int = 1000,
         show_pid: bool = True,
         show_timestamp: bool = True,
         track_platform: bool = True,
     ):
-        """Control Log Routine main function. Defaults: debug_Mode_C = True, log_routine_C = True, file_name = "ioc", max_lines = 1000, show_pid = True, show_timestamp = True, track_platform = True"""
+        """Control Log Routine main function. Defaults: debug_Mode_C = True, log_routine_C = True, file_name = "logs", max_lines = 1000, show_pid = True, show_timestamp = True, track_platform = True"""
         global log_routine_switch
         global debug_mode
         global file_log_name
@@ -132,7 +130,7 @@ class nick_logger:
             return os_log_det
 
     # 📖 Main log function
-    def log_routine(log: str, time_needed: bool = True):
+    def log_routine(log: str, time_needed: bool = True, hide_pid: bool = True):
         """Write strings to the log file and if debug is enabled, print it to console. ARGS: log, time_needed = True"""
 
         global current_time
@@ -187,12 +185,12 @@ class nick_logger:
 
         if log_routine_switch == True:
             # Append the log to the file.
-            if time_needed == True and (Pid != ""):
+            if time_needed == True and (Pid != "") and (hide_pid == False):
                 with open(
                     f"{relative_to_logs(f'{file_log_name}.log')}", "a"
                 ) as log_file:
                     log_file.write(f"{current_time} | PID {Pid} - {log}\n")
-            elif (time_needed == True) and (Pid == ""):
+            elif (time_needed == True) and (Pid == "") and (hide_pid == True):
                 with open(
                     f"{relative_to_logs(f'{file_log_name}.log')}", "a"
                 ) as log_file:

@@ -15,7 +15,7 @@ import PIL
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
-from logger import nick_logger as nick_log
+from SLN import nick_logger as nick_log
 from tkinter.filedialog import askdirectory
 from tkinter import (
     Tk,
@@ -49,7 +49,7 @@ SUMMARY:
 """
 
 # ✍️ Initial Setup to load assets
-Log_Routine_Controller = nick_log.log_routine_controller(False)
+Log_Routine_Controller = nick_log.log_routine_controller(False, True, "ioc", 700, True, True, True)
 OS_Detector = platform.system()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
