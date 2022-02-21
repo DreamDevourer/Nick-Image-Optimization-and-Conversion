@@ -3,7 +3,7 @@ Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
 # 🧶 Modules Imports
-import pathlib, os, time, json, platform
+import pathlib, os, time, json, platform, base64, re
 from pathlib import Path
 
 """ Made by Nicolas Mendes - Feb 2022
@@ -30,20 +30,72 @@ __copyright__ = """
     that you make.
 
 """
+__version__ = "v1.0.5"
+
+program_ver = "v1.0.9 - Dev"
 
 # ✍️ Initial Setup to load assets
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 LOGS_PATH = OUTPUT_PATH / Path("./Resources/logs")
-VERSION_PATH = OUTPUT_PATH / Path("./Resources/version.json")
+VERSION_PATH = OUTPUT_PATH / Path("./Resources/tmp/verinfo.bin")
+VERSION_PATH_RAW = OUTPUT_PATH / Path("./Resources")
 
-# load "version.json", get the "current_version" and store inside a variable called "current_version".
-# if the file does not exist, create it and append: '{ "currentVersion": "v1.0.0 - Release" }'
-if not VERSION_PATH.exists():
-    with open(f"{VERSION_PATH}", "w") as version_file:
-        version_file.write(json.dumps({"currentVersion": "v1.0.0 - Release"}))
-        # close
-        version_file.close()
+
+def relative_to_ver(path: str) -> Path:
+    """Return a path relative to the logs folder."""
+    return VERSION_PATH_RAW / Path(path)
+
+
+SOFTWARE_VER = f"""{{ 'currentVersion': '{program_ver}' }}"""
+OBFUSCATED_VER = base64.b64encode(SOFTWARE_VER.encode("utf-8"))
+
+# Create a file called verinfo.bin inside the ./Resources folder
+if not os.path.exists(relative_to_ver("tmp")):
+    os.makedirs(relative_to_ver("tmp"))
+    # Write SOFTWARE_VER to verinfo.bin
+    with open(relative_to_ver("verinfo.bin"), "w") as f:
+        f.write(OBFUSCATED_VER)
+
+
+def encryptSecurity():
+    KEY = "MjI0"  # up 255
+    KEY = base64.b64decode(KEY)
+    cleanKey = re.sub(r"[^A-Za-z0-9-]", "", KEY.decode("utf-8"))
+    finalKey = int(cleanKey)
+
+    loadEnc00 = open(relative_to_ver("./tmp/verinfo.bin"), "rb")
+    byteReaderData = loadEnc00.read()
+    loadEnc00.close()
+
+    byteReaderData = bytearray(byteReaderData)
+    for index, value in enumerate(byteReaderData):
+        byteReaderData[index] = value ^ finalKey
+
+    Enc = open(relative_to_ver("verinfo.bin"), "wb")
+    Enc.write(byteReaderData)
+    Enc.close()
+
+    os.remove(relative_to_ver("./tmp/verinfo.bin"))
+
+
+def decryptSecurity():
+    KEY = "MjI0"  # up 255
+    KEY = base64.b64decode(KEY)
+    cleanKey = re.sub(r"[^A-Za-z0-9-]", "", KEY.decode("utf-8"))
+    finalKey = int(cleanKey)
+
+    loadEnc00 = open(relative_to_ver("verinfo.bin"), "rb").read()
+
+    byteReader = bytearray(loadEnc00)
+    for index, value in enumerate(byteReader):
+        byteReader[index] = value ^ finalKey
+
+    decEnc = open(relative_to_ver("./tmp/verinfo.bin"), "wb")
+    decEnc.write(byteReader)
+
+
+decryptSecurity()
 
 with open(f"{VERSION_PATH}", "r+") as version_file:
     version_data = json.load(version_file)
@@ -57,6 +109,7 @@ with open(f"{VERSION_PATH}", "r+") as version_file:
 
     current_version = version_data["currentVersion"]
     version_file.close()
+    encryptSecurity()
 
 
 def relative_to_logs(path: str) -> Path:
