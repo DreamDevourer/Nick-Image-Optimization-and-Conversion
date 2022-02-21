@@ -20,7 +20,7 @@ SUMMARY:
 
 __copyright__ = """
 
-    Generic Nick Logger (GNL) - Copyright (c) 2021-2022, Nicolas Mendes; mailto:nicolasmendes_developer@outlook.com
+    Standard Nick Logger (SNL) - Copyright (c) 2021-2022, Nicolas Mendes; mailto:nicolasmendes_developer@outlook.com
 
     Permission to use, copy, modify, and distribute this software and its
     documentation for any purpose and without fee or royalty is hereby granted,
@@ -35,10 +35,24 @@ __copyright__ = """
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 LOGS_PATH = OUTPUT_PATH / Path("./logs")
+VERSION_PATH = OUTPUT_PATH / Path("version.json")
 
 # load "version.json", get the "current_version" and store inside a variable called "current_version".
-with open(f"{OUTPUT_PATH}/version.json", "r") as version_file:
+# if the file does not exist, create it and append: '{ "currentVersion": "v1.0.0 - Release" }'
+if not VERSION_PATH.exists():
+    with open(f"{VERSION_PATH}", "w") as version_file:
+        version_file.write(json.dumps({"currentVersion": "v1.0.0 - Release"}))
+
+with open(f"{VERSION_PATH}", "r+") as version_file:
     version_data = json.load(version_file)
+    
+    if (
+        (version_data is None)
+        or (version_data == "")
+        or ("currentVersion" not in version_data)
+    ):
+        version_file.write(json.dumps({"currentVersion": "v1.0.0 - Release"}))
+
     current_version = version_data["currentVersion"]
 
 
@@ -108,7 +122,9 @@ class nick_logger:
         else:
             OS_Detector = ""
 
-    def log_os_details(log_message: str = f"\n\n[OK] ===> Python loaded on {OS_Detector}. Starting new instance at PID: {Pid} | UTS: {get_timestamp}\n"):
+    def log_os_details(
+        log_message: str = f"\n\n[OK] ===> Python loaded on {OS_Detector}. Starting new instance at PID: {Pid} | UTS: {get_timestamp}\n",
+    ):
         """Logs OS details"""
 
         if Pid != "" and get_timestamp != "" and OS_Detector != "":
@@ -126,7 +142,7 @@ class nick_logger:
 
         log_header = f"""{current_version}
 ===================================================
-                            GNL
+                            SNL
             LOG FILE MADE FOR DEBUG PURPOSES
         made by Nicolas Mendes - September 2021
 ===================================================\n
@@ -189,6 +205,7 @@ class nick_logger:
 
         if debug_mode == True:
             return print(f"DEBUG LOG: {log}")
+
 
 if __name__ == "__main__":
     print(__copyright__)
