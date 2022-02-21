@@ -15,7 +15,7 @@ import PIL
 import tkinter as tkCore
 from PIL import Image
 from pathlib import Path
-from SLN import nick_logger as nick_log
+from SNL import nick_logger as nick_log
 from tkinter.filedialog import askdirectory
 from tkinter import (
     Tk,
