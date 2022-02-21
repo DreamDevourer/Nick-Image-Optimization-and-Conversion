@@ -42,6 +42,8 @@ VERSION_PATH = OUTPUT_PATH / Path("version.json")
 if not VERSION_PATH.exists():
     with open(f"{VERSION_PATH}", "w") as version_file:
         version_file.write(json.dumps({"currentVersion": "v1.0.0 - Release"}))
+        # close
+        version_file.close()
 
 with open(f"{VERSION_PATH}", "r+") as version_file:
     version_data = json.load(version_file)
@@ -54,6 +56,7 @@ with open(f"{VERSION_PATH}", "r+") as version_file:
         version_file.write(json.dumps({"currentVersion": "v1.0.0 - Release"}))
 
     current_version = version_data["currentVersion"]
+    version_file.close()
 
 
 def relative_to_logs(path: str) -> Path:
@@ -152,6 +155,7 @@ class nick_logger:
             # append log_header to the file.
             with open(f"{relative_to_logs(f'{file_log_name}.log')}", "a") as log_file:
                 log_file.write(log_header)
+                log_file.close()
 
         # if the first line of {file_log_name}.log is different from current_version
         with open(f"{relative_to_logs(f'{file_log_name}.log')}") as check_ver:
@@ -165,6 +169,7 @@ class nick_logger:
                         log_file.write(
                             "\n\n[NOTICE] Log file has been deleted or cleaned.\n"
                         )
+                        log_file.close()
                 else:
                     # Delete everything inside the file and append log_header.
                     with open(
@@ -174,6 +179,7 @@ class nick_logger:
                         log_file.write(
                             f"\n\n[NOTICE] PROGRAM HAS BEEN UPDATED TO {current_version}!\n"
                         )
+                        log_file.close()
 
         # if the file exceeds 1000 lines, delete everything and append log_header to the file.
         with open(f"{relative_to_logs(f'{file_log_name}.log')}", "r") as log_file:
@@ -207,3 +213,4 @@ class nick_logger:
 
 if __name__ == "__main__":
     print(__copyright__)
+    exit()
