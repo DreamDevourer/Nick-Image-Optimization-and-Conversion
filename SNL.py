@@ -3,7 +3,7 @@ Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
 # 🧶 Modules Imports
-import pathlib, os, time, json, platform, base64, re
+import pathlib, os, time, json, platform, base64, re, random
 from pathlib import Path
 
 """ Made by Nicolas Mendes - Feb 2022
@@ -40,7 +40,6 @@ OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 LOGS_PATH = OUTPUT_PATH / Path("./Resources/logs")
 VERSION_PATH = OUTPUT_PATH / Path("./Resources/tmp/verinfo.bin")
 VERSION_PATH_RAW = OUTPUT_PATH / Path("./Resources")
-
 
 def relative_to_ver(path: str) -> Path:
     """Return a path relative to the logs folder."""
@@ -204,7 +203,7 @@ class nick_logger:
 
         log_header = f"""{current_version}
 ===================================================
-                            SNL
+                   Standard Nick Logger
             LOG FILE MADE FOR DEBUG PURPOSES
         made by Nicolas Mendes - September 2021
 ===================================================\n
