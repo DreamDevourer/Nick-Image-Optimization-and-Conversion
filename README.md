@@ -1,4 +1,4 @@
-<h1 align="center">Nick - Image Optimization and Conversion 🏞</h1>
+<h1 align="center">Image Optimization and Conversion 🏞</h1>
 
 <p align="center">Optimize and convert common bitmap images to WebP format.</p>
 
