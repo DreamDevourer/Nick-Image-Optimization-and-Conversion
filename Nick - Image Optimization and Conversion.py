@@ -49,7 +49,9 @@ SUMMARY:
 """
 
 # ✍️ Initial Setup to load assets
-Log_Routine_Controller = nick_log.log_routine_controller(False, True, "ioc", 700, True, True, True)
+Log_Routine_Controller = nick_log.log_routine_controller(
+    False, True, "ioc", 700, True, True, True
+)
 OS_Detector = platform.system()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
@@ -541,8 +543,16 @@ try:
         # Show a message window with "Optimization and conversion completed!"
         Cleaning_Routine()
 
-        if OS_Detector == "Windows" or OS_Detector == "Darwin":
+        if OS_Detector == "Darwin":
             subprocess.Popen(["open", "-R", Folder_Imgs])
+        elif OS_Detector == "Windows":
+            subprocess.Popen(["explorer", Folder_Imgs])
+        elif (
+            (OS_Detector == "Linux")
+            or (OS_Detector == "FreeBSD")
+            or (OS_Detector == "BSD")
+        ):
+            subprocess.Popen(["xdg-open", Folder_Imgs])
 
         messagebox.showinfo(
             title="Optimization and conversion completed! \n",
