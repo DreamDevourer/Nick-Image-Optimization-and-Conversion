@@ -3,7 +3,7 @@ Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
 # 🧶 Modules Imports
-import pathlib, os, time, json, platform, base64, re, random
+import pathlib, os, time, json, platform, base64, re, shutil
 from pathlib import Path
 
 """ Made by Nicolas Mendes - Feb 2022
@@ -45,6 +45,12 @@ def relative_to_ver(path: str) -> Path:
     """Return a path relative to the logs folder."""
     return VERSION_PATH_RAW / Path(path)
 
+if not os.path.exists(relative_to_ver("tmp")):
+        os.makedirs(relative_to_ver("tmp"))
+# If tmp/verinfo.bin don't exist create verinfo.bin
+if not os.path.exists(relative_to_ver("tmp/verinfo.bin")):
+    # Copy verinfo.bin to tmp folder
+    shutil.copy(relative_to_ver("verinfo.bin"), relative_to_ver("tmp"))
 
 def version_handler():
     SOFTWARE_VER = f"""{{ 'currentVersion': '{program_ver}' }}"""
@@ -203,7 +209,7 @@ class nick_logger:
 
         log_header = f"""{current_version}
 ===================================================
-                   Standard Nick Logger
+                  Standard Nick Logger
             LOG FILE MADE FOR DEBUG PURPOSES
         made by Nicolas Mendes - September 2021
 ===================================================\n
