@@ -34,8 +34,8 @@ __copyright__ = """
 # ✍️ Initial Setup to load assets
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
-LOGS_PATH = OUTPUT_PATH / Path("./logs")
-VERSION_PATH = OUTPUT_PATH / Path("version.json")
+LOGS_PATH = OUTPUT_PATH / Path("./Resources/logs")
+VERSION_PATH = OUTPUT_PATH / Path("./Resources/version.json")
 
 # load "version.json", get the "current_version" and store inside a variable called "current_version".
 # if the file does not exist, create it and append: '{ "currentVersion": "v1.0.0 - Release" }'

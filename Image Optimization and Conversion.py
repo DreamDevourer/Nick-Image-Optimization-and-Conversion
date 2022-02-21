@@ -55,7 +55,7 @@ Log_Routine_Controller = nick_log.log_routine_controller(
 OS_Detector = platform.system()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
-ASSETS_PATH = OUTPUT_PATH / Path("./assets")
+ASSETS_PATH = OUTPUT_PATH / Path("./Resources")
 Images_PATH = OUTPUT_PATH / Path("./images")
 
 
