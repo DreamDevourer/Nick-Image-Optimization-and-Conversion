@@ -50,7 +50,7 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 Log_Routine_Controller = nick_log.log_routine_controller(
-    False, True, "ioc", 700, True, True, True
+    False, True, "ioc", 700, True, True, True, "v1.0.9 - Dev"
 )
 OS_Detector = platform.system()
 

@@ -30,9 +30,9 @@ __copyright__ = """
     that you make.
 
 """
-__version__ = "v1.0.5"
+__SNL_version__ = "v1.0.5"
 
-program_ver = "v1.0.9 - Dev"
+program_ver = ""
 
 # ✍️ Initial Setup to load assets
 
@@ -47,18 +47,20 @@ def relative_to_ver(path: str) -> Path:
     return VERSION_PATH_RAW / Path(path)
 
 
-SOFTWARE_VER = f"""{{ 'currentVersion': '{program_ver}' }}"""
-OBFUSCATED_VER = base64.b64encode(SOFTWARE_VER.encode("utf-8"))
+def version_handler():
+    SOFTWARE_VER = f"""{{ 'currentVersion': '{program_ver}' }}"""
+    OBFUSCATED_VER = base64.b64encode(SOFTWARE_VER.encode("utf-8"))
 
-# Create a file called verinfo.bin inside the ./Resources folder
-if not os.path.exists(relative_to_ver("tmp")):
-    os.makedirs(relative_to_ver("tmp"))
-    # Write SOFTWARE_VER to verinfo.bin
-    with open(relative_to_ver("verinfo.bin"), "w") as f:
-        f.write(OBFUSCATED_VER)
+    # Create a file called verinfo.bin inside the ./Resources folder
+    if not os.path.exists(relative_to_ver("tmp")):
+        os.makedirs(relative_to_ver("tmp"))
+        # Write SOFTWARE_VER to verinfo.bin
+        with open(relative_to_ver("verinfo.bin"), "w") as f:
+            f.write(OBFUSCATED_VER)
 
 
 def encryptSecurity():
+    """Encrypt the version file"""
     KEY = "MjI0"  # up 255
     KEY = base64.b64decode(KEY)
     cleanKey = re.sub(r"[^A-Za-z0-9-]", "", KEY.decode("utf-8"))
@@ -80,6 +82,7 @@ def encryptSecurity():
 
 
 def decryptSecurity():
+    """Decrypt the version file"""
     KEY = "MjI0"  # up 255
     KEY = base64.b64decode(KEY)
     cleanKey = re.sub(r"[^A-Za-z0-9-]", "", KEY.decode("utf-8"))
@@ -146,8 +149,9 @@ class nick_logger:
         show_pid: bool = True,
         show_timestamp: bool = True,
         track_platform: bool = True,
+        program_version: str = "v1.0.0 - Release",
     ):
-        """Control Log Routine main function. Defaults: debug_Mode_C = True, log_routine_C = True, file_name = "logs", max_lines = 1000, show_pid = True, show_timestamp = True, track_platform = True"""
+        """Control Log Routine main function. Defaults: debug_Mode_C = True, log_routine_C = True, file_name = 'logs', max_lines = 1000, show_pid = True, show_timestamp = True, track_platform = True, program_version = 'v1.0.0 - Release' """
         global log_routine_switch
         global debug_mode
         global file_log_name
@@ -155,11 +159,13 @@ class nick_logger:
         global Pid
         global get_timestamp
         global OS_Detector
+        global program_ver
 
         log_routine_switch = log_routine_C
         debug_mode = debug_Mode_C
         file_log_name = file_name
         max_lines_allowed = max_lines
+        program_ver = program_version
 
         if show_pid:
             Pid = os.getpid()
@@ -175,6 +181,8 @@ class nick_logger:
             OS_Detector = platform.system()
         else:
             OS_Detector = ""
+
+        version_handler()
 
     def log_os_details(
         log_message: str = f"\n\n[OK] ===> Python loaded on {OS_Detector}. Starting new instance at PID: {Pid} | UTS: {get_timestamp}\n",
