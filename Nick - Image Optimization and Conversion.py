@@ -101,7 +101,7 @@ try:
     files = os.listdir(Images_PATH)
     Printable_Files = Images_PATH
 
-    # LINUX PATCHES
+    # LINUX/BSD/WINDOWS PATCHES
 
     if OS_Detector == "Linux":
         Select_Folder_Font_Size = 12
