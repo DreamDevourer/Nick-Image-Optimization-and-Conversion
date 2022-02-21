@@ -6,9 +6,9 @@
 # capitalized. Lowecase for imports and classes only.
 import re
 import os
-import platform
 import time
 import pathlib
+import platform
 import subprocess
 import shutil
 import PIL
@@ -49,19 +49,12 @@ SUMMARY:
 """
 
 # ✍️ Initial Setup to load assets
-
-Pid = os.getpid()
-OS_Detector = platform.system()
 Log_Routine_Controller = nick_log.log_routine_controller(False)
+OS_Detector = platform.system()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 Images_PATH = OUTPUT_PATH / Path("./images")
-
-
-def Get_Timestamp():
-    """Return a unix timestamp."""
-    return time.time()
 
 
 def Relative_To_Assets(path: str) -> Path:
@@ -81,7 +74,7 @@ def Relative_To_Images(path: str) -> Path:
 
 
 nick_log.log_routine(
-    f"\n\n[OK] ===> Python loaded on {OS_Detector}. Starting new instance at PID: {Pid} | UTS: {Get_Timestamp()}\n",
+    nick_log.log_os_details(),
     False,
 )
 
@@ -444,7 +437,9 @@ try:
                     Img_Optimize = Img_Optimize.resize(
                         (int(imgWidth / 2), int(imgHeight / 2)), PIL.Image.ANTIALIAS
                     )
-                    nick_log.log_routine(f"Reducing image resolution by half of {File_Name}")
+                    nick_log.log_routine(
+                        f"Reducing image resolution by half of {File_Name}"
+                    )
                     nick_log.log_routine(f"[OK] Optimized {File_Name}")
 
                     if file.endswith(".png"):
@@ -470,7 +465,9 @@ try:
                         f"Image: {File_Name}, is not larger enough to reduce resolution."
                     )
 
-                    nick_log.log_routine(f"Performing standard optimization on {File_Name}")
+                    nick_log.log_routine(
+                        f"Performing standard optimization on {File_Name}"
+                    )
                     if File_Name.endswith(".png"):
                         Img_Optimize.save(
                             str(Relative_To_Images(str(File_Name))),
@@ -546,7 +543,7 @@ try:
 
         if OS_Detector == "Windows" or OS_Detector == "Darwin":
             subprocess.Popen(["open", "-R", Folder_Imgs])
-        
+
         messagebox.showinfo(
             title="Optimization and conversion completed! \n",
             message="All files have been optimized and converted to WebP!",
@@ -579,8 +576,15 @@ except:
 
 # 🙌 __main__
 if __name__ == "__main__":
-    if OS_Detector == "Linux" or OS_Detector == "Darwin" or OS_Detector == "BSD" or OS_Detector == "FreeBSD":
-        nick_log.log_routine("[OK] IOC has started!\n===========PROGRAM INITIATED===========\n")
+    if (
+        OS_Detector == "Linux"
+        or OS_Detector == "Darwin"
+        or OS_Detector == "BSD"
+        or OS_Detector == "FreeBSD"
+    ):
+        nick_log.log_routine(
+            "[OK] IOC has started!\n===========PROGRAM INITIATED===========\n"
+        )
         if OS_Detector == "Windows" or OS_Detector == "Darwin":
             Root_Window.after(500, Scheduler_Controller)
         Root_Window.mainloop()
