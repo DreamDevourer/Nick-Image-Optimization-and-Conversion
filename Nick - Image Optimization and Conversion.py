@@ -103,12 +103,13 @@ try:
 
     # LINUX/BSD/WINDOWS PATCHES
 
-    if OS_Detector == "Linux":
+    if OS_Detector == "Linux" or OS_Detector == "BSD" or OS_Detector == "FreeBSD":
         Select_Folder_Font_Size = 12
         List_X_Position = 0.59
         IOC_Type_Size = 24
         Checkbox_Label_Size = 9
     else:
+        # Works well on MacOS.
         Select_Folder_Font_Size = 18
         List_X_Position = 0.5
         IOC_Type_Size = 36
