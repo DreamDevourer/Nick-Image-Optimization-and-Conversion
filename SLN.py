@@ -3,7 +3,7 @@ Based on https://github.com/DreamDevourer/Python-Fundamentals-Study
 """
 
 # 🧶 Modules Imports
-import pathlib, os, time, json, platform, base64, re
+import pathlib, os, time, json, platform
 from pathlib import Path
 
 """ Made by Nicolas Mendes - Feb 2022
@@ -45,7 +45,7 @@ if not VERSION_PATH.exists():
 
 with open(f"{VERSION_PATH}", "r+") as version_file:
     version_data = json.load(version_file)
-    
+
     if (
         (version_data is None)
         or (version_data == "")
@@ -70,9 +70,9 @@ debug_mode = None
 file_log_name = None
 max_lines_allowed = None
 Pid = None
-current_time = time.strftime("%m-%d-%Y -> %H:%M:%S")
 get_timestamp = None
 OS_Detector = None
+current_time = time.strftime("%m-%d-%Y -> %H:%M:%S")
 
 # 🔖 Main class
 class nick_logger:
