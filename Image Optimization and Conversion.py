@@ -591,6 +591,7 @@ if __name__ == "__main__":
         or OS_Detector == "Darwin"
         or OS_Detector == "BSD"
         or OS_Detector == "FreeBSD"
+        or OS_Detector == "Windows"
     ):
         nick_log.log_routine(
             "[OK] IOC has started!\n===========PROGRAM INITIATED===========\n"
@@ -598,7 +599,5 @@ if __name__ == "__main__":
         if OS_Detector == "Windows" or OS_Detector == "Darwin":
             Root_Window.after(500, Scheduler_Controller)
         Root_Window.mainloop()
-    elif OS_Detector == "Windows":
-        nick_log.log_routine(f"[X] ERROR: WINDOWS NOT YET SUPPORT IN THIS VERSION.")
     else:
         nick_log.log_routine(f"[X] ERROR: OS {OS_Detector} NOT OFFICIALLY SUPPORT")
