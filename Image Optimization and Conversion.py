@@ -98,7 +98,7 @@ try:
 
     # LINUX/BSD/WINDOWS PATCHES
 
-    if OS_Detector == "Linux" or OS_Detector == "BSD" or OS_Detector == "FreeBSD":
+    if OS_Detector == "Linux" or OS_Detector == "BSD" or OS_Detector == "FreeBSD" or OS_Detector == "Windows":
         Select_Folder_Font_Size = 12
         List_X_Position = 0.59
         IOC_Type_Size = 24
