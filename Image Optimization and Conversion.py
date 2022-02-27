@@ -38,7 +38,16 @@ SUMMARY:
 ✍️ Initial Setup to load assets
 🧝🏻‍♀️ Tk Window Settings
 💬 Variables
+=========== Platform OS patches
 🌈 UI
+=========== Buttons and Labels
+=========== Make magic button
+=========== Browse Button
+=========== Entry to load files
+=========== Listbox to show files loaded Root_Window
+=========== Logo Text
+=========== Checkbox
+=========== Logo Icon
 🔖 Load GUI files defs
 ⚙️ Logic and Defs
 =========== 📜 Check Function
@@ -98,17 +107,39 @@ try:
 
     # LINUX/BSD/WINDOWS PATCHES
 
-    if OS_Detector == "Linux" or OS_Detector == "BSD" or OS_Detector == "FreeBSD" or OS_Detector == "Windows":
+    if OS_Detector == "Linux" or OS_Detector == "BSD" or OS_Detector == "FreeBSD" or OS_Detector == "NomadBSD":
+        # Libre Nix (Tested under Ubuntu, PopOS, Fedora and NomadBSD)
         Select_Folder_Font_Size = 12
         List_X_Position = 0.59
+        List_Y_Position = 0.5
         IOC_Type_Size = 24
         Checkbox_Label_Size = 9
+        Checkbox_X_Position=0.031
+        Checkbox_Y_Position=0.71
+        List_Height = 5
+        List_Width = 50
+    elif OS_Detector == "Windows":
+        # Windows 10+
+        Select_Folder_Font_Size = 18
+        List_X_Position = 0.59
+        List_Y_Position = 0.65
+        IOC_Type_Size = 36
+        Checkbox_Label_Size = 12
+        Checkbox_X_Position=0.032
+        Checkbox_Y_Position=0.71
+        List_Height = 15
+        List_Width = 75
     else:
-        # Works well on MacOS.
+        # Works well on MacOS Darwin (High Sierra+).
         Select_Folder_Font_Size = 18
         List_X_Position = 0.5
+        List_Y_Position = 0.5
         IOC_Type_Size = 36
         Checkbox_Label_Size = 13
+        Checkbox_X_Position=0.03
+        Checkbox_Y_Position=0.7
+        List_Height = 5
+        List_Width = 50
 
     # 🌈 UI
     canvas = Canvas(
@@ -214,15 +245,17 @@ try:
     list_items = Listbox(
         x=210.0,
         y=115.0,
-        height=5,
-        width=50,
+        height=List_Height,
+        width=List_Width,
         bg="#232323",
         fg="#FFFFFF",
         font=("Mulish Regular", 18 * -1),
         highlightcolor="#ECC0FB",
         border=0,
+        highlightthickness=0,
+        borderwidth=0,
     )
-    list_items.place(relx=List_X_Position, rely=0.5, anchor="center")
+    list_items.place(relx=List_X_Position, rely=List_Y_Position, anchor="center")
 
     canvas.create_text(
         253.0,
@@ -256,7 +289,7 @@ try:
         font=("Mulish Regular", Checkbox_Label_Size * -1),
     )
     Reduce_By_HalfChck.deselect()
-    Reduce_By_HalfChck.place(relx=0.03, rely=0.7, anchor="nw")
+    Reduce_By_HalfChck.place(relx=Checkbox_X_Position, rely=Checkbox_Y_Position, anchor="nw")
 
     # Logo Icon
     image_image_6 = PhotoImage(file=Relative_To_Assets("image_6.png"))
@@ -550,6 +583,7 @@ try:
         elif (
             (OS_Detector == "Linux")
             or (OS_Detector == "FreeBSD")
+            or (OS_Detector == "NomadBSD")
             or (OS_Detector == "BSD")
         ):
             subprocess.Popen(["xdg-open", Folder_Imgs])
@@ -591,6 +625,7 @@ if __name__ == "__main__":
         or OS_Detector == "Darwin"
         or OS_Detector == "BSD"
         or OS_Detector == "FreeBSD"
+        or OS_Detector == "NomadBSD"
         or OS_Detector == "Windows"
     ):
         nick_log.log_routine(
@@ -600,4 +635,4 @@ if __name__ == "__main__":
             Root_Window.after(500, Scheduler_Controller)
         Root_Window.mainloop()
     else:
-        nick_log.log_routine(f"[X] ERROR: OS {OS_Detector} NOT OFFICIALLY SUPPORT")
+        nick_log.log_routine(f"[X] ERROR: OS {OS_Detector} NOT OFFICIALLY SUPPORTED")
