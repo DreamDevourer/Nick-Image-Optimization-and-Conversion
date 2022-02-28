@@ -59,12 +59,17 @@ SUMMARY:
 
 # ✍️ Initial Setup to load assets
 Log_Routine_Controller = nick_log.log_routine_controller(
-    False, True, "ioc", 700, True, True, True, "v1.0.9 - Dev"
+    False, True, "ioc", 700, True, True, True, "v1.1.0 - Release"
 )
 OS_Detector = platform.system()
 
 OUTPUT_PATH = pathlib.Path(__file__).parent.absolute()
 ASSETS_PATH = OUTPUT_PATH / Path("./Resources")
+
+# If images folfder does not exist, create it.
+if not os.path.exists(OUTPUT_PATH / Path("./images")):
+    os.makedirs(OUTPUT_PATH / Path("./images"))
+
 Images_PATH = OUTPUT_PATH / Path("./images")
 
 
